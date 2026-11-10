@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for Phase 1 smoke tests."""
+"""Shared pytest fixtures for Channel 3 tests."""
 
 from __future__ import annotations
 
@@ -12,7 +12,6 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
-# Ensure settings resolve to local compose defaults before app import
 os.environ.setdefault(
     "DATABASE_URL",
     "postgresql+psycopg://kenwer:kenwer@localhost:5433/kenwer_c3",
@@ -20,9 +19,11 @@ os.environ.setdefault(
 os.environ.setdefault("REDIS_URL", "redis://localhost:6380/0")
 os.environ.setdefault("LLM_PROVIDER", "mock")
 os.environ.setdefault("BEACON_ENABLED", "false")
+os.environ.setdefault("APP_ENV", "development")
 
+from kenwer_c3.auth.bootstrap import ensure_dev_identity  # noqa: E402
+from kenwer_c3.db.base import get_engine, get_session_factory  # noqa: E402
 from kenwer_c3.db import models  # noqa: E402
-from kenwer_c3.db.base import Base, get_engine, get_session_factory  # noqa: E402
 from kenwer_c3.main import create_app  # noqa: E402
 from kenwer_c3.settings import get_settings  # noqa: E402
 
@@ -38,7 +39,6 @@ def settings():
 @pytest.fixture(scope="session")
 def engine(settings):
     eng = create_engine(settings.database_url, pool_pre_ping=True, future=True)
-    # Fail fast with a clear message if infra is down
     with eng.connect() as conn:
         conn.execute(text("SELECT 1"))
         row = conn.execute(
@@ -78,6 +78,26 @@ def client() -> Iterator[TestClient]:
 
 
 @pytest.fixture
+def auth_headers_admin() -> dict[str, str]:
+    return {"Authorization": "Bearer dev-admin-key"}
+
+
+@pytest.fixture
+def auth_headers_ingest() -> dict[str, str]:
+    return {"Authorization": "Bearer dev-ingest-key"}
+
+
+@pytest.fixture
+def auth_headers_retrieve() -> dict[str, str]:
+    return {"Authorization": "Bearer dev-retrieve-key"}
+
+
+@pytest.fixture
+def auth_headers_reviewer() -> dict[str, str]:
+    return {"Authorization": "Bearer dev-reviewer-key"}
+
+
+@pytest.fixture
 def tenant_and_identity(db_session: Session) -> tuple[models.Tenant, models.CognitiveIdentity]:
     tenant = models.Tenant(
         id=uuid.uuid4(),
@@ -97,6 +117,41 @@ def tenant_and_identity(db_session: Session) -> tuple[models.Tenant, models.Cogn
     db_session.add(identity)
     db_session.flush()
     return tenant, identity
+
+
+@pytest.fixture
+def other_tenant_identity(
+    db_session: Session,
+) -> tuple[models.Tenant, models.CognitiveIdentity]:
+    tenant = models.Tenant(
+        id=uuid.uuid4(),
+        name=f"other-tenant-{uuid.uuid4().hex[:8]}",
+    )
+    db_session.add(tenant)
+    db_session.flush()
+    identity = models.CognitiveIdentity(
+        id=uuid.uuid4(),
+        tenant_id=tenant.id,
+        slug=f"other-{uuid.uuid4().hex[:6]}",
+        display_name="Other Tenant Drone",
+    )
+    db_session.add(identity)
+    db_session.flush()
+    return tenant, identity
+
+
+@pytest.fixture
+def seeded_dev_identity(engine) -> tuple[uuid.UUID, uuid.UUID]:
+    """Commit-visible seed for API integration tests (TestClient uses real sessions)."""
+    SessionLocal = sessionmaker(bind=engine, expire_on_commit=False, future=True)
+    session = SessionLocal()
+    try:
+        settings = get_settings()
+        tenant, identity = ensure_dev_identity(session, settings)
+        session.commit()
+        return tenant.id, identity.id
+    finally:
+        session.close()
 
 
 def utcnow() -> datetime:

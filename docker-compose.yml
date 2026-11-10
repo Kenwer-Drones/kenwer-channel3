@@ -27,12 +27,12 @@ services:
       timeout: 3s
       retries: 10
 
-  # Object storage is optional for Phase 1. Enable with:
-  #   docker compose --profile storage up -d
-  # Image pull may require Docker Hub auth depending on local registry access.
+  # Official minio/minio Hub images are no longer pullable (source-only CE).
+  # Verified substitute pinned by digest — see docs/infrastructure-minio.md
   minio:
     profiles: ["storage"]
-    image: minio/minio:latest
+    image: cleanstart/minio@sha256:3377f7b92aabe2bdca25d26c3b37fe7d3fdbf5057e461bbc87af34ebd6252aaf
+    user: "0"
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: kenwerminio
@@ -43,7 +43,7 @@ services:
     volumes:
       - minio_data:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9000/minio/health/live"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -52,9 +52,10 @@ services:
   api:
     profiles: ["full"]
     build: .
+    image: kenwer-arch3-api:latest
     command: >
       sh -c "alembic upgrade head &&
-             uvicorn kenwer_c3.main:app --host 0.0.0.0 --port 8000 --reload"
+             uvicorn kenwer_c3.main:app --host 0.0.0.0 --port 8000"
     env_file:
       - .env.example
     environment:
@@ -63,6 +64,7 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
       S3_ENDPOINT_URL: http://minio:9000
+      APP_ENV: development
     ports:
       - "8000:8000"
     volumes:
@@ -77,6 +79,7 @@ services:
   worker:
     profiles: ["full"]
     build: .
+    image: kenwer-arch3-worker:latest
     command: celery -A kenwer_c3.workers.celery_app worker --loglevel=INFO
     env_file:
       - .env.example
@@ -86,6 +89,7 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
       S3_ENDPOINT_URL: http://minio:9000
+      APP_ENV: development
     volumes:
       - ./src:/app/src
     depends_on:
@@ -93,8 +97,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      api:
-        condition: service_started
 
 volumes:
   postgres_data:

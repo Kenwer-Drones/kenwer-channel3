@@ -20,8 +20,10 @@ uvicorn kenwer_c3.main:app --reload --port 8000
 ```
 
 Optional profiles:
-- `docker compose --profile storage up -d` — MinIO (requires Docker Hub pull access)
+- `docker compose --profile storage up -d` — MinIO via digest-pinned `cleanstart/minio` (see `docs/infrastructure-minio.md`)
 - `docker compose --profile full up --build` — API + Celery worker containers
+
+Docs: `AGENTS.md`, `docs/architecture.md`, `docs/data-contracts.md`, `docs/infrastructure-minio.md`.
 
 - Health: `GET http://localhost:8000/health`
 - Ready: `GET http://localhost:8000/ready`

@@ -16,7 +16,11 @@ COPY src ./src
 COPY alembic.ini ./
 COPY alembic ./alembic
 
-RUN pip install --upgrade pip && pip install -e ".[dev]"
+RUN pip install --upgrade pip && pip install -e ".[dev]" \
+    && useradd --create-home --uid 10001 --shell /usr/sbin/nologin kenwer \
+    && chown -R kenwer:kenwer /app
+
+USER kenwer
 
 EXPOSE 8000
 

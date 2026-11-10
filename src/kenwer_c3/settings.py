@@ -18,12 +18,12 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     database_url: str = Field(
-        default="postgresql+psycopg://kenwer:kenwer@localhost:5432/kenwer_c3"
+        default="postgresql+psycopg://kenwer:kenwer@localhost:5433/kenwer_c3"
     )
 
-    redis_url: str = "redis://localhost:6379/0"
-    celery_broker_url: str = "redis://localhost:6379/0"
-    celery_result_backend: str = "redis://localhost:6379/1"
+    redis_url: str = "redis://localhost:6380/0"
+    celery_broker_url: str = "redis://localhost:6380/0"
+    celery_result_backend: str = "redis://localhost:6380/1"
 
     s3_endpoint_url: str = "http://localhost:9000"
     s3_access_key: str = "kenwerminio"
