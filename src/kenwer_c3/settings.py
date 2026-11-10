@@ -52,6 +52,9 @@ class Settings(BaseSettings):
     beacon_enabled: bool = False
     beacon_otlp_endpoint: str | None = None
 
+    # When true, Celery runs tasks inline (unit/API tests). Real-worker tests set false.
+    celery_task_always_eager: bool = False
+
 
 @lru_cache
 def get_settings() -> Settings:

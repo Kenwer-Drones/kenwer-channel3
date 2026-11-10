@@ -22,6 +22,7 @@ class EpisodeLifecycleState(str, Enum):
 class ExpectationSnapshotCreate(DomainModel):
     criteria_json: dict[str, Any]
     metric_baselines: dict[str, Any] = Field(default_factory=dict)
+    mission_plan_version: str | None = None
     source_system: str
     source_event_id: str | None = None
     captured_at: datetime
@@ -71,6 +72,8 @@ class ExpectationSnapshotRead(DomainModel):
     cognitive_identity_id: UUID
     criteria_json: dict[str, Any]
     metric_baselines: dict[str, Any]
+    mission_plan_version: str | None = None
+    approved_plan_snapshot: dict[str, Any] = Field(default_factory=dict)
     source_system: str
     source_event_id: str | None
     captured_at: datetime
@@ -130,6 +133,7 @@ class FreezeExpectationRequest(DomainModel):
 
     criteria_json: dict[str, Any]
     metric_baselines: dict[str, Any] = Field(default_factory=dict)
+    mission_plan_version: str | None = None
     source_system: str
     source_event_id: str | None = None
     captured_at: datetime

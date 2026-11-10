@@ -20,6 +20,7 @@ os.environ.setdefault("REDIS_URL", "redis://localhost:6380/0")
 os.environ.setdefault("LLM_PROVIDER", "mock")
 os.environ.setdefault("BEACON_ENABLED", "false")
 os.environ.setdefault("APP_ENV", "development")
+os.environ.setdefault("CELERY_TASK_ALWAYS_EAGER", "true")
 
 from kenwer_c3.auth.bootstrap import ensure_dev_identity  # noqa: E402
 from kenwer_c3.db.base import get_engine, get_session_factory  # noqa: E402

@@ -97,6 +97,7 @@ class EpisodicMemoryService:
                 FreezeExpectationRequest(
                     criteria_json=payload.expectation.criteria_json,
                     metric_baselines=payload.expectation.metric_baselines,
+                    mission_plan_version=payload.expectation.mission_plan_version,
                     source_system=payload.expectation.source_system,
                     source_event_id=payload.expectation.source_event_id,
                     captured_at=payload.expectation.captured_at,
@@ -198,6 +199,17 @@ class EpisodicMemoryService:
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Cannot append events to an aborted episode",
             )
+
+        # Execution observations require a sealed pre-mission expectation
+        if payload.event_type.startswith(("observation.", "telemetry.")):
+            if episode.expectation is None or not episode.expectation.is_sealed:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail=(
+                        "Cannot record execution observations before freezing "
+                        "an approved pre-mission expectation snapshot"
+                    ),
+                )
 
         # Observations proposing persistent overwrites are recorded but never applied here
         provenance = dict(payload.provenance)
@@ -329,6 +341,11 @@ class EpisodicMemoryService:
     def _create_sealed_expectation(
         self, episode: MissionEpisode, payload: FreezeExpectationRequest
     ) -> ExpectationSnapshot:
+        plan_version = payload.mission_plan_version or (
+            (episode.approved_plan or {}).get("version")
+            if isinstance(episode.approved_plan, dict)
+            else None
+        )
         snap = ExpectationSnapshot(
             id=uuid.uuid4(),
             tenant_id=self.principal.tenant_id,
@@ -336,6 +353,8 @@ class EpisodicMemoryService:
             cognitive_identity_id=episode.cognitive_identity_id,
             criteria_json=payload.criteria_json,
             metric_baselines=payload.metric_baselines,
+            mission_plan_version=str(plan_version) if plan_version is not None else None,
+            approved_plan_snapshot=dict(episode.approved_plan or {}),
             source_system=payload.source_system,
             source_event_id=payload.source_event_id,
             captured_at=payload.captured_at,

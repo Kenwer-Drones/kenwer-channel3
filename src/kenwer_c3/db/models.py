@@ -393,9 +393,13 @@ class ExpectationSnapshot(Base):
         ForeignKey("cognitive_identities.id", ondelete="CASCADE"),
         nullable=False,
     )
-    # Frozen payload — never mutate after insert
+    # Frozen payload — never mutate after insert (DB trigger enforces when is_sealed)
     criteria_json: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     metric_baselines: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, nullable=False, server_default=text("'{}'::jsonb")
+    )
+    mission_plan_version: Mapped[Optional[str]] = mapped_column(String(128))
+    approved_plan_snapshot: Mapped[dict[str, Any]] = mapped_column(
         JSONB, nullable=False, server_default=text("'{}'::jsonb")
     )
     source_system: Mapped[str] = mapped_column(String(128), nullable=False)
@@ -406,7 +410,7 @@ class ExpectationSnapshot(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
-    # Soft lock marker: once true, services refuse any write
+    # Soft lock marker: once true, services refuse any write; trigger hard-blocks UPDATEs
     is_sealed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
 
     episode: Mapped[MissionEpisode] = relationship(back_populates="expectation")
@@ -743,6 +747,9 @@ class LearningJob(Base):
     stage_artifacts: Mapped[dict[str, Any]] = mapped_column(
         JSONB, nullable=False, server_default=text("'{}'::jsonb")
     )
+    celery_task_id: Mapped[Optional[str]] = mapped_column(String(255))
+    attempt_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    idempotency_key: Mapped[Optional[str]] = mapped_column(String(255))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
@@ -779,6 +786,15 @@ class DiscrepancyReport(Base):
     expected_value: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     observed_value: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     discrepancy: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    result_status: Mapped[Optional[str]] = mapped_column(String(32))
+    unit: Mapped[Optional[str]] = mapped_column(String(64))
+    comparison_operator: Mapped[Optional[str]] = mapped_column(String(32))
+    evidence_refs: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, nullable=False, server_default=text("'{}'::jsonb")
+    )
+    measurement_quality: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, nullable=False, server_default=text("'{}'::jsonb")
+    )
     uncertainty: Mapped[dict[str, Any]] = mapped_column(
         JSONB, nullable=False, server_default=text("'{}'::jsonb")
     )

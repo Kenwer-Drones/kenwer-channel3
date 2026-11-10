@@ -64,9 +64,15 @@ Bearer API keys with roles:
 
 Credentials bind to a tenant (and optionally a cognitive identity). Cross-tenant access is denied.
 
-## Learning pipeline (later phases)
+## Learning pipeline
 
-Finalized episodes enqueue Celery jobs that run C1–C6. Candidates never publish themselves; Phase 5 validation gates consolidated writes.
+Finalized (or evaluable) episodes enqueue Celery jobs:
+
+1. **C1** Episode reconstruction (chronological events, evidence refs, missing vs negative)
+2. **C2** Immutable expectation retrieval (reject if no sealed baseline)
+3. **C3** Deterministic metric evaluation → `discrepancy_reports` (no causation, no beliefs)
+
+C4–C6 (LLM attribution, candidates, reconciliation) and publication gates land in later phases. Consolidated memory is never written by C1–C3.
 
 ## Observability
 
