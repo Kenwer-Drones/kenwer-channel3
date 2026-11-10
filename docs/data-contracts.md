@@ -1,6 +1,6 @@
 # Data Contracts
 
-Pydantic models live under `src/kenwer_c3/domain/`. ORM tables live under `src/kenwer_c3/db/models.py`.
+Pydantic models: `src/kenwer_c3/domain/`. ORM: `src/kenwer_c3/db/models.py`.
 
 ## Identity
 
@@ -11,51 +11,55 @@ Pydantic models live under `src/kenwer_c3/domain/`. ORM tables live under `src/k
 
 ## Persistent memory
 
-**`PersistentFactCreate`**
+**`PersistentFactCreate` / `PersistentFactRead`**
 
-- `cognitive_identity_id`, `fact_key`, `category`, `value_json`
-- `source_system`, optional `source_event_id`, `provenance`
-- `allow_controlled_update` (default `false`) — required for versioned supersession when values differ
-
-**`PersistentFactRead`**
-
-- Includes `version`, `status` (`active` \| `superseded` \| `contradicted` \| `withdrawn`), validity window, provenance
+- Versioned facts with `status` (`active` \| `superseded` \| `contradicted` \| `withdrawn`)
+- `allow_controlled_update` required to supersede differing values
+- Provenance + `source_system` required
 
 ## Episodic memory
 
-**`MissionEpisodeCreate`**
+**`MissionEpisodeCreate`**, **`FreezeExpectationRequest`**, **`MissionEventIngest`**, **`EpisodeFinalizeRequest`**
 
-- `external_mission_id`, `mission_type`, objectives/plan/site/platform contexts
-- Optional nested expectation to freeze at create time
-
-**`FreezeExpectationRequest` / `ExpectationSnapshotRead`**
-
-- `criteria_json`, `metric_baselines`, `captured_at`, `is_sealed=true` after freeze
-- Immutable after seal
-
-**`MissionEventIngest`**
-
-- `event_idempotency_key` (required), `event_type`, `payload`, `recorded_at`, `source_system`
-- Optional `proposed_persistent_fact_key` — recorded in provenance only; does **not** mutate persistent memory
-
-**`EpisodeFinalizeRequest`**
-
-- `actual_outcomes`, `missing_data` (explicit missing evidence)
+- Sealed expectations immutable after freeze
+- Event ingest idempotent on `(tenant_id, episode_id, event_idempotency_key)`
 
 ## Consolidated memory
 
 **`BeliefRead` / `BeliefVersionRead`**
 
-- Returned only when `approval_status == approved`
-- Includes `applicability`, `confidence`, `safety_impact`, `provenance`, `limitations`, `published_at`
+- Retrieval returns **approved** only
+- `confidence` + `confidence_basis` + optional `evidence_support_label`
+- Numeric model scores are uncalibrated
 
-## Learning artifacts (schema present; services in later phases)
+## Learning artifacts
 
-`DiscrepancyReport`, `AttributionHypothesis`, `CandidateLesson`, `BeliefProposal`, `ValidationDecision` — ORM tables exist; API/services arrive in Phases 3–5.
+| Artifact | Produced by | Published? |
+|----------|-------------|------------|
+| `DiscrepancyReport` | C3 | No |
+| `AttributionHypothesis` | C4 | No |
+| `CandidateLesson` | C5 | No |
+| `BeliefProposal` | C6 | No (pending review) |
+| `BeliefVersion` approved | Publication service after validation + review | Yes |
+| `ValidationDecision` | Review/publication | Audit |
+
+## Retrieval
+
+**`CognitiveRetrievalRequest` / `CognitiveContextResponse`**
+
+- Memory types: persistent, consolidated, optional episodic
+- `no_applicable_knowledge`, `knowledge_version`, `filters_applied`, `limitations`
+
+## Review
+
+**`ProposalReviewRequest`**: `APPROVE` \| `REJECT` \| `DEFER`  
+**`BeliefRollbackRequest`**: restore prior version without deleting history
 
 ## Invariants
 
 1. Body `tenant_id` is ignored for authorization; principal tenant wins.
 2. Sealed expectations cannot be rewritten.
-3. Duplicate event keys are idempotent successes, not errors.
-4. Unapproved beliefs are not exposed on consolidated read APIs.
+3. Duplicate event keys are idempotent successes.
+4. Unapproved beliefs are never exposed as active consolidated knowledge.
+5. C4–C5 never mutate published belief content / current version / approval state.
+6. Similarity ranks candidates only — never alone decides agreement or contradiction.

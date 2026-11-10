@@ -1,4 +1,4 @@
-"""Learning job APIs — enqueue C1–C3 evaluation (Phase 3)."""
+"""Learning job APIs — enqueue C1–C6 evaluation (proposals only; no auto-publish)."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ router = APIRouter(prefix="/v1/learning", tags=["learning"])
 @router.post(
     "/jobs",
     response_model=LearningJobRead,
-    summary="Enqueue a C1–C3 learning/evaluation job for an episode",
+    summary="Enqueue a C1–C6 learning/evaluation job for an episode",
 )
 def create_learning_job(
     body: LearningJobCreate,

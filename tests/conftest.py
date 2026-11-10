@@ -1,4 +1,8 @@
-"""Shared pytest fixtures for Channel 3 tests."""
+"""Shared pytest fixtures for Channel 3 tests.
+
+Automated tests use the isolated ``kenwer_c3_test`` database by default so
+they do not contaminate the development database ``kenwer_c3``.
+"""
 
 from __future__ import annotations
 
@@ -12,9 +16,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
+# Isolate automated tests from the development database.
 os.environ.setdefault(
     "DATABASE_URL",
-    "postgresql+psycopg://kenwer:kenwer@localhost:5433/kenwer_c3",
+    "postgresql+psycopg://kenwer:kenwer@localhost:5433/kenwer_c3_test",
 )
 os.environ.setdefault("REDIS_URL", "redis://localhost:6380/0")
 os.environ.setdefault("LLM_PROVIDER", "mock")
@@ -29,12 +34,64 @@ from kenwer_c3.main import create_app  # noqa: E402
 from kenwer_c3.settings import get_settings  # noqa: E402
 
 
-@pytest.fixture(scope="session")
-def settings():
+def _ensure_test_database() -> None:
+    """Create kenwer_c3_test if missing (does not touch kenwer_c3 data)."""
+    admin = "postgresql://kenwer:kenwer@localhost:5433/postgres"
+    import psycopg
+
+    with psycopg.connect(admin, autocommit=True) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT 1 FROM pg_database WHERE datname = %s",
+                ("kenwer_c3_test",),
+            )
+            if cur.fetchone() is None:
+                cur.execute('CREATE DATABASE "kenwer_c3_test"')
+
+
+TEST_DATABASE_URL = (
+    "postgresql+psycopg://kenwer:kenwer@localhost:5433/kenwer_c3_test"
+)
+
+
+@pytest.fixture(autouse=True)
+def _restore_isolated_test_database(request):
+    """Keep unit/API tests on kenwer_c3_test even if a live-worker test mutates env."""
+    if "test_celery_real_worker" in request.node.nodeid:
+        yield
+        # Restore isolation for subsequent tests
+        os.environ["DATABASE_URL"] = TEST_DATABASE_URL
+        os.environ["CELERY_TASK_ALWAYS_EAGER"] = "true"
+        get_settings.cache_clear()
+        get_engine.cache_clear()
+        get_session_factory.cache_clear()
+        return
+    os.environ["DATABASE_URL"] = TEST_DATABASE_URL
+    os.environ.setdefault("CELERY_TASK_ALWAYS_EAGER", "true")
     get_settings.cache_clear()
     get_engine.cache_clear()
     get_session_factory.cache_clear()
-    return get_settings()
+    yield
+
+
+@pytest.fixture(scope="session")
+def settings():
+    _ensure_test_database()
+    os.environ["DATABASE_URL"] = TEST_DATABASE_URL
+    get_settings.cache_clear()
+    get_engine.cache_clear()
+    get_session_factory.cache_clear()
+    cfg = get_settings()
+    # Hard guard: refuse to run the suite against the primary development DB
+    if cfg.database_url.rstrip("/").endswith("/kenwer_c3") and os.environ.get(
+        "ALLOW_TESTS_ON_DEV_DB"
+    ) != "1":
+        pytest.exit(
+            "Refusing to run tests against development database kenwer_c3. "
+            "Use kenwer_c3_test (default) or set ALLOW_TESTS_ON_DEV_DB=1 explicitly.",
+            returncode=2,
+        )
+    return cfg
 
 
 @pytest.fixture(scope="session")
@@ -42,14 +99,23 @@ def engine(settings):
     eng = create_engine(settings.database_url, pool_pre_ping=True, future=True)
     with eng.connect() as conn:
         conn.execute(text("SELECT 1"))
+        conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+        conn.commit()
         row = conn.execute(
             text("SELECT extname FROM pg_extension WHERE extname = 'vector'")
         ).fetchone()
         if row is None:
             pytest.fail(
-                "pgvector extension missing — run `alembic upgrade head` against "
-                "the local Postgres from docker compose."
+                "pgvector extension missing — run scripts/ensure_test_database.py "
+                "and alembic upgrade head against kenwer_c3_test."
             )
+    # Apply migrations to the isolated test DB
+    from alembic import command
+    from alembic.config import Config
+
+    cfg = Config("alembic.ini")
+    cfg.set_main_option("sqlalchemy.url", settings.database_url)
+    command.upgrade(cfg, "head")
     return eng
 
 

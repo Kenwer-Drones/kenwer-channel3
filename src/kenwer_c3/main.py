@@ -6,6 +6,8 @@ from kenwer_c3 import __version__
 from kenwer_c3.api.health import router as health_router
 from kenwer_c3.api.learning import router as learning_router
 from kenwer_c3.api.memory import router as memory_router
+from kenwer_c3.api.retrieval import router as retrieval_router
+from kenwer_c3.api.review import router as review_router
 from kenwer_c3.settings import get_settings
 
 
@@ -24,6 +26,8 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(memory_router)
     app.include_router(learning_router)
+    app.include_router(review_router)
+    app.include_router(retrieval_router)
 
     @app.get("/")
     def root() -> dict[str, str]:

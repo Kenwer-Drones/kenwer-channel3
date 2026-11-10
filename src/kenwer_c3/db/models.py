@@ -74,11 +74,29 @@ class BeliefApprovalStatus(str, enum.Enum):
 
 
 class BeliefProposalOperation(str, enum.Enum):
-    create = "CREATE"
-    reinforce = "REINFORCE"
-    refine = "REFINE"
-    revise = "REVISE"
-    challenge = "CHALLENGE"
+    CREATE = "CREATE"
+    REINFORCE = "REINFORCE"
+    REFINE = "REFINE"
+    REVISE = "REVISE"
+    CHALLENGE = "CHALLENGE"
+    INSUFFICIENT_EVIDENCE = "INSUFFICIENT_EVIDENCE"
+    REDUNDANT = "REDUNDANT"
+    INCONCLUSIVE = "INCONCLUSIVE"
+
+
+class EvidenceSupportLabel(str, enum.Enum):
+    """Discrete evidence-support labels — not calibrated probabilities."""
+
+    insufficient = "insufficient"
+    weak = "weak"
+    moderate = "moderate"
+    strong = "strong"
+
+
+class ConfidenceBasis(str, enum.Enum):
+    uncalibrated_model = "uncalibrated_model"
+    evidence_support_label = "evidence_support_label"
+    human_set = "human_set"
 
 
 class SafetyImpact(str, enum.Enum):
@@ -605,6 +623,10 @@ class BeliefVersion(Base):
         JSONB, nullable=False, server_default=text("'{}'::jsonb")
     )
     confidence: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    confidence_basis: Mapped[str] = mapped_column(
+        String(64), nullable=False, default=ConfidenceBasis.uncalibrated_model.value
+    )
+    evidence_support_label: Mapped[Optional[str]] = mapped_column(String(32))
     approval_status: Mapped[BeliefApprovalStatus] = mapped_column(
         Enum(BeliefApprovalStatus, name="belief_approval_status", native_enum=False),
         nullable=False,
@@ -694,6 +716,10 @@ class ValidationDecision(Base):
         UUID(as_uuid=True),
         ForeignKey("belief_versions.id", ondelete="CASCADE"),
         nullable=False,
+    )
+    belief_proposal_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("belief_proposals.id", ondelete="SET NULL"),
     )
     action: Mapped[ValidationAction] = mapped_column(
         Enum(ValidationAction, name="validation_action", native_enum=False),
@@ -911,6 +937,9 @@ class BeliefProposal(Base):
         UUID(as_uuid=True),
         ForeignKey("beliefs.id", ondelete="SET NULL"),
     )
+    cognitive_identity_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+        UUID(as_uuid=True)
+    )
     operation: Mapped[BeliefProposalOperation] = mapped_column(
         Enum(
             BeliefProposalOperation,
@@ -923,6 +952,15 @@ class BeliefProposal(Base):
     contradiction_notes: Mapped[Optional[str]] = mapped_column(Text)
     status: Mapped[str] = mapped_column(
         String(32), nullable=False, default="pending_review"
+    )
+    validation_report: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, nullable=False, server_default=text("'{}'::jsonb")
+    )
+    reviewer_key_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True))
+    review_rationale: Mapped[Optional[str]] = mapped_column(Text)
+    reviewed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    flags_existing_for_review: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False
     )
     resulting_belief_version_id: Mapped[Optional[uuid.UUID]] = mapped_column(
         UUID(as_uuid=True),

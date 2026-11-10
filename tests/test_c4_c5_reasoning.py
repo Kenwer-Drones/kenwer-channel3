@@ -108,7 +108,7 @@ def test_mission1_competing_hypotheses_and_lessons(db_session, tenant_and_identi
     )
     finished = LearningPipeline(db_session, MockReasoningProvider()).run(job.id)
     assert finished.status == LearningJobStatus.completed
-    assert finished.current_stage == "C5_done"
+    assert finished.current_stage == "C6_done"
     assert "C4" in finished.stage_artifacts
     assert "C5" in finished.stage_artifacts
 

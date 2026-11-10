@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
     acks_late=True,
 )
 def run_learning_job(self, job_id: str) -> dict:
-    """Execute C1–C3 for a learning job. Never writes consolidated memory."""
+    """Execute C1–C6 for a learning job. Never writes consolidated memory."""
     session = get_session_factory()()
     try:
         job_uuid = uuid.UUID(job_id)

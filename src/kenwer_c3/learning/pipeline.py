@@ -1,4 +1,8 @@
-"""Orchestrate C1→C5 for a learning job. Does not write consolidated memory."""
+"""Orchestrate C1→C6 for a learning job.
+
+C6 emits belief proposals only. Consolidated memory is never written by this
+pipeline — publication requires separate validation + authorized human review.
+"""
 
 from __future__ import annotations
 
@@ -16,6 +20,7 @@ from kenwer_c3.learning.c2_expectations import ExpectationRetrievalService
 from kenwer_c3.learning.c3_evaluation import OutcomeEvaluationService
 from kenwer_c3.learning.c4_attribution import AttributionAnalysisService
 from kenwer_c3.learning.c5_lessons import CandidateLessonService
+from kenwer_c3.learning.c6_reconciliation import BeliefReconciliationService
 from kenwer_c3.learning.evidence_context import EvidenceContextBuilder
 from kenwer_c3.llm.base import ReasoningProviderError
 from kenwer_c3.llm.factory import get_reasoning_provider
@@ -183,9 +188,20 @@ class LearningPipeline:
             )
             artifacts["C5"] = c5
             self._store_artifacts(job, artifacts)
+            job.current_stage = "C6"
+            self.session.flush()
+
+            # C6: reconcile → proposals only (no publication)
+            c6 = BeliefReconciliationService(self.session, job.tenant_id).run(
+                job_id=job.id,
+                cognitive_identity_id=job.cognitive_identity_id,
+                evidence_context=evidence_context,
+            )
+            artifacts["C6"] = c6
+            self._store_artifacts(job, artifacts)
 
             job.status = LearningJobStatus.completed
-            job.current_stage = "C5_done"
+            job.current_stage = "C6_done"
             job.completed_at = datetime.now(timezone.utc)
             job.error_message = None
             self.session.flush()
@@ -202,12 +218,13 @@ class LearningPipeline:
             return job
         except Exception as exc:  # noqa: BLE001
             # Soft-fail: keep C1–C3 committed in this session
-            artifacts["C4_C5_error"] = f"{type(exc).__name__}: {exc}"
+            stage = job.current_stage or "C4_C6"
+            artifacts["C4_C6_error"] = f"{type(exc).__name__}: {exc}"
             self._store_artifacts(job, artifacts)
             job.status = LearningJobStatus.failed_soft
             job.error_message = f"{type(exc).__name__}: {exc}"
             job.completed_at = datetime.now(timezone.utc)
-            job.current_stage = "C4_C5_failed_soft"
+            job.current_stage = f"{stage}_failed_soft"
             self.session.flush()
             return job
 

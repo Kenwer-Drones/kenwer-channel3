@@ -105,7 +105,8 @@ class MockReasoningProvider:
                             "Elevated wind may correlate with reduced thermal image "
                             "quality for this platform (correlation only)."
                         ),
-                        confidence=0.55,
+                        model_confidence_uncalibrated=0.55,
+                        evidence_support_label="moderate",
                         supporting_evidence=supporting,
                         contradictory_evidence=[],
                         missing_evidence=[]
@@ -145,7 +146,8 @@ class MockReasoningProvider:
                             "Thermal camera configuration or focus may have been "
                             "suboptimal during inspection (hypothesis only)."
                         ),
-                        confidence=0.45 if wind_events else 0.4,
+                        model_confidence_uncalibrated=0.45 if wind_events else 0.4,
+                        evidence_support_label="weak",
                         supporting_evidence=supporting,
                         contradictory_evidence=contradictory,
                         missing_evidence=missing,
@@ -260,6 +262,11 @@ class MockReasoningProvider:
                         "metric": discrepancy.get("metric_name"),
                     },
                     supporting_evidence_ids=support_ids,
+                    contradictory_evidence_ids=[
+                        c.evidence_id
+                        for c in hypo.contradictory_evidence
+                        if c.evidence_id in allowed
+                    ],
                     limitations=(
                         "Hypothesis only; not an approved belief. "
                         "Correlation must not be treated as causation."
@@ -267,6 +274,8 @@ class MockReasoningProvider:
                     uncertainty=hypo.uncertainty,
                     safety_impact="operational",
                     is_hypothesis_only=True,
+                    model_confidence_uncalibrated=hypo.model_confidence_uncalibrated,
+                    evidence_support_label=hypo.evidence_support_label,
                 )
             )
 

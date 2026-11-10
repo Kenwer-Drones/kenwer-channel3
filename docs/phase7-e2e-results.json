@@ -1,0 +1,444 @@
+{
+  "started_at": "2026-11-10T02:57:50.086215+00:00",
+  "mission1": {
+    "persistent_fact_id": "2c858458-e77e-48b5-bdfc-4f885c67cc1e",
+    "episode_id": "cfd46cd2-07a2-4ac9-957e-7f5e789e6e6e",
+    "celery_task_id": "bf5147f1-7b63-49a9-b89b-9590faa1a2f5",
+    "learning_job_id": "991cfac6-c5f2-4667-9d0f-b3c9a43cedf5",
+    "stages": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "evidence_context"
+    ],
+    "c3_summary": {
+      "fail": 1,
+      "pass": 2,
+      "unknown": 0,
+      "not_applicable": 0,
+      "beliefs_generated": false,
+      "causation_inferred": false
+    },
+    "c6_proposal_count": 2,
+    "proposals": [
+      {
+        "id": "d86cff0c-b1a4-4b8b-b795-df926cfa1386",
+        "operation": "REINFORCE",
+        "status": "pending_review"
+      },
+      {
+        "id": "3c3d1cf8-a519-4ddc-9fc8-a852d61d40f7",
+        "operation": "REINFORCE",
+        "status": "pending_review"
+      }
+    ],
+    "crafted_create_proposal": false,
+    "review_status_code": 200,
+    "review_body": {
+      "proposal_id": "d86cff0c-b1a4-4b8b-b795-df926cfa1386",
+      "status": "published",
+      "operation": "REINFORCE",
+      "challenge_flagged": false,
+      "resulting_belief_version_id": "0335d609-1029-4ffb-be89-1ebf1abff8b3",
+      "validation_report": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "safety_impact_known",
+            "passed": true,
+            "detail": "safety_impact=operational"
+          },
+          {
+            "name": "supporting_evidence_present",
+            "passed": true,
+            "detail": "3 supporting refs"
+          },
+          {
+            "name": "evidence_integrity",
+            "passed": true,
+            "detail": "Verified 3 evidence refs in tenant/identity scope"
+          },
+          {
+            "name": "applicability",
+            "passed": true,
+            "detail": "Applicability ok: ['mission_type', 'platform_type']"
+          },
+          {
+            "name": "conflict_detection",
+            "passed": true,
+            "detail": "No hard conflicts detected"
+          },
+          {
+            "name": "no_authoritative_override",
+            "passed": true,
+            "detail": "No authoritative override language detected"
+          },
+          {
+            "name": "confidence_labeling",
+            "passed": true,
+            "detail": "basis=uncalibrated_model label=moderate (uncalibrated scores are not probabilities)"
+          }
+        ],
+        "safety_impact": "operational",
+        "errors": []
+      },
+      "reviewed_at": "2026-11-10T02:57:56.529574Z",
+      "review_rationale": "Phase 7 E2E authorized publication of operational guidance",
+      "consolidated_memory_changed": true
+    },
+    "published_belief_version_id": "0335d609-1029-4ffb-be89-1ebf1abff8b3",
+    "published": {
+      "belief_id": "945323aa-97c0-41d2-8f33-a393ecf44bcb",
+      "belief_key": "thermal.wind_degrades_image_quality.5962d956",
+      "version": 7,
+      "statement": "Elevated wind may correlate with reduced thermal image quality for this platform (correlation only).",
+      "confidence_basis": "uncalibrated_model",
+      "evidence_support_label": "moderate",
+      "applicability": {
+        "metric": "image_quality",
+        "limitations": "Hypothesis only; not an approved belief. Correlation must not be treated as causation.",
+        "uncertainty": "Wind and image quality co-occur; causation is not established.",
+        "mission_type": "thermal_inspection",
+        "platform_type": "quadrotor"
+      },
+      "limitations": "Hypothesis only; not an approved belief. Correlation must not be treated as causation.",
+      "audit_decisions": 1
+    }
+  },
+  "mission2": {
+    "direct_belief_get": {
+      "belief_id": "945323aa-97c0-41d2-8f33-a393ecf44bcb",
+      "version": 7,
+      "confidence_basis": "uncalibrated_model",
+      "limitations": "Hypothesis only; not an approved belief. Correlation must not be treated as causation."
+    },
+    "retrieval": {
+      "knowledge_version": "c3-retrieval-v1",
+      "no_applicable_knowledge": false,
+      "fact_count": 50,
+      "belief_count": 24,
+      "filters_applied": [
+        "tenant_isolation",
+        "cognitive_identity_scope",
+        "approved_active_beliefs_only",
+        "applicability_hard_filter_before_ranking",
+        "persistent_active_facts",
+        "consolidated_approved_current_only"
+      ],
+      "limitations": [
+        "Retrieval does not issue flight commands or bypass Channel 1 validation.",
+        "Semantic ranking is advisory only; it never authorizes access or determines agreement/contradiction.",
+        "Token Jaccard / local embeddings are uncalibrated lexical helpers."
+      ]
+    },
+    "wrong_platform_excluded_published": true
+  },
+  "beliefs_before": [
+    {
+      "id": "7384e48a-ed32-419a-a4b4-a5ff4c250004",
+      "belief_id": "b59848fa-4818-4f40-aa31-7b094f3030f1",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "feb5ec2e-55c6-45f2-8b81-b78bd63ffb5b",
+      "belief_id": "5248727e-1297-4826-9398-c2a306bda8f6",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "0a051721-31f6-4201-8224-c9edd6fc0648",
+      "belief_id": "2e5bb84d-f649-43b5-8f03-cafb0ec86e63",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "ef33eddf-9a83-4172-917e-e0a0aa372555",
+      "belief_id": "c9ffac4f-644d-4387-8fe3-1131d194eed0",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "61803b02-ec0b-44ab-b759-3d6066313cf2",
+      "belief_id": "b91a200c-56b9-4c1a-a8f6-9591afb84f8d",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "fe3c9906-0e7d-46e4-bf41-5080d492fa92",
+      "belief_id": "81c751c2-b52b-4ae6-8c3e-d94a02b0be55",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "23d2fe63-06a2-4592-9d8a-aa1903a51a6f",
+      "belief_id": "ba40409f-17b2-4bfa-842f-c0af7c92ad89",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "6e6932da-0fea-4328-827a-be169d2583a3",
+      "belief_id": "51fb9464-322d-4627-996c-3bcbc3ba27f1",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "82c2893d-4d67-4908-8b8a-157aad24a387",
+      "belief_id": "277a1a7c-cb47-49e3-bc12-bade7c16d4f8",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "131651ae-b7bf-4fe0-a437-d74752db5631",
+      "belief_id": "fee9c1c2-d83c-4ae7-a5c8-e9e48170e914",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "13e5ec0d-3b5b-4068-a44e-a39708c6d322",
+      "belief_id": "721cfab9-f5a8-430c-8e64-f47629a82c7b",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "e0ccdbdb-d7cb-41db-8625-1970b8b9c7c2",
+      "belief_id": "aa1c9439-ebb0-48be-b56c-017dc226eb9f",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "d7814b8e-5c6b-4946-bfd8-04a6063a212f",
+      "belief_id": "85ee860e-cbab-4d69-820b-64712123e064",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "11d1ee63-a80b-4241-8030-4e98ddc05dd7",
+      "belief_id": "0423cd62-6fd4-4050-91fa-dacc167d6179",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "4a73834b-8f68-43b9-9584-7fd1fc3904ea",
+      "belief_id": "55627517-7e6f-48be-8835-eddcfdd675f6",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "d1b1b984-79fe-44d9-a7c8-63585d0891a6",
+      "belief_id": "6fde9086-ae2c-440f-966c-28a3acfa7fa4",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "603f944c-b771-4a28-b86a-e5b0222f9c7d",
+      "belief_id": "a178a069-0f0f-4d46-80c7-f55d6319dbc4",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "def1d7c9-18ec-4b71-90a8-df44590e0755",
+      "belief_id": "74b0f9e4-8758-4357-ba50-6fbc70ee3c6d",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "c47eb03a-066f-496c-b6e4-164b85ae3167",
+      "belief_id": "178e20e2-516d-4786-b34d-29609532a404",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "2b8dd96e-3970-44a0-9e70-b64570e2cb84",
+      "belief_id": "3ba6475a-b044-497e-8ed6-6b9315780aa4",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "e4e34e78-136f-43e9-bc52-accda806c053",
+      "belief_id": "a770750a-da67-4840-8696-220c92b2f4a1",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "4ea382c9-50f1-4173-ba02-8c0f473a49f5",
+      "belief_id": "150792e6-ba05-49fc-b5c4-0f187c8b5639",
+      "version": 1,
+      "statement": "Thermal camera configuration or focus may have been suboptimal during inspection (hypothesis only)."
+    },
+    {
+      "id": "fc5c079d-b378-42b1-9dc8-171d7b364a96",
+      "belief_id": "34ca0cca-4929-40c2-b241-20c39134f116",
+      "version": 1,
+      "statement": "API retrieval approved belief about fog contrast."
+    },
+    {
+      "id": "252c1e09-8e95-494a-8c69-6f4c4aee9a54",
+      "belief_id": "945323aa-97c0-41d2-8f33-a393ecf44bcb",
+      "version": 6,
+      "statement": "Elevated wind may correlate with reduced thermal image quality for this platform (correlation only)."
+    }
+  ],
+  "beliefs_after": [
+    {
+      "id": "7384e48a-ed32-419a-a4b4-a5ff4c250004",
+      "belief_id": "b59848fa-4818-4f40-aa31-7b094f3030f1",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "feb5ec2e-55c6-45f2-8b81-b78bd63ffb5b",
+      "belief_id": "5248727e-1297-4826-9398-c2a306bda8f6",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "0a051721-31f6-4201-8224-c9edd6fc0648",
+      "belief_id": "2e5bb84d-f649-43b5-8f03-cafb0ec86e63",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "ef33eddf-9a83-4172-917e-e0a0aa372555",
+      "belief_id": "c9ffac4f-644d-4387-8fe3-1131d194eed0",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "61803b02-ec0b-44ab-b759-3d6066313cf2",
+      "belief_id": "b91a200c-56b9-4c1a-a8f6-9591afb84f8d",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "fe3c9906-0e7d-46e4-bf41-5080d492fa92",
+      "belief_id": "81c751c2-b52b-4ae6-8c3e-d94a02b0be55",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "23d2fe63-06a2-4592-9d8a-aa1903a51a6f",
+      "belief_id": "ba40409f-17b2-4bfa-842f-c0af7c92ad89",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "6e6932da-0fea-4328-827a-be169d2583a3",
+      "belief_id": "51fb9464-322d-4627-996c-3bcbc3ba27f1",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "82c2893d-4d67-4908-8b8a-157aad24a387",
+      "belief_id": "277a1a7c-cb47-49e3-bc12-bade7c16d4f8",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "131651ae-b7bf-4fe0-a437-d74752db5631",
+      "belief_id": "fee9c1c2-d83c-4ae7-a5c8-e9e48170e914",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "13e5ec0d-3b5b-4068-a44e-a39708c6d322",
+      "belief_id": "721cfab9-f5a8-430c-8e64-f47629a82c7b",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "e0ccdbdb-d7cb-41db-8625-1970b8b9c7c2",
+      "belief_id": "aa1c9439-ebb0-48be-b56c-017dc226eb9f",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "d7814b8e-5c6b-4946-bfd8-04a6063a212f",
+      "belief_id": "85ee860e-cbab-4d69-820b-64712123e064",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "11d1ee63-a80b-4241-8030-4e98ddc05dd7",
+      "belief_id": "0423cd62-6fd4-4050-91fa-dacc167d6179",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "4a73834b-8f68-43b9-9584-7fd1fc3904ea",
+      "belief_id": "55627517-7e6f-48be-8835-eddcfdd675f6",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "d1b1b984-79fe-44d9-a7c8-63585d0891a6",
+      "belief_id": "6fde9086-ae2c-440f-966c-28a3acfa7fa4",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "603f944c-b771-4a28-b86a-e5b0222f9c7d",
+      "belief_id": "a178a069-0f0f-4d46-80c7-f55d6319dbc4",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "def1d7c9-18ec-4b71-90a8-df44590e0755",
+      "belief_id": "74b0f9e4-8758-4357-ba50-6fbc70ee3c6d",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "c47eb03a-066f-496c-b6e4-164b85ae3167",
+      "belief_id": "178e20e2-516d-4786-b34d-29609532a404",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "2b8dd96e-3970-44a0-9e70-b64570e2cb84",
+      "belief_id": "3ba6475a-b044-497e-8ed6-6b9315780aa4",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "e4e34e78-136f-43e9-bc52-accda806c053",
+      "belief_id": "a770750a-da67-4840-8696-220c92b2f4a1",
+      "version": 2,
+      "statement": "Wind above 8 m/s degrades thermal image quality for this platform."
+    },
+    {
+      "id": "4ea382c9-50f1-4173-ba02-8c0f473a49f5",
+      "belief_id": "150792e6-ba05-49fc-b5c4-0f187c8b5639",
+      "version": 1,
+      "statement": "Thermal camera configuration or focus may have been suboptimal during inspection (hypothesis only)."
+    },
+    {
+      "id": "fc5c079d-b378-42b1-9dc8-171d7b364a96",
+      "belief_id": "34ca0cca-4929-40c2-b241-20c39134f116",
+      "version": 1,
+      "statement": "API retrieval approved belief about fog contrast."
+    },
+    {
+      "id": "0335d609-1029-4ffb-be89-1ebf1abff8b3",
+      "belief_id": "945323aa-97c0-41d2-8f33-a393ecf44bcb",
+      "version": 7,
+      "statement": "Elevated wind may correlate with reduced thermal image quality for this platform (correlation only)."
+    }
+  ],
+  "timings_sec": {
+    "mission1": 0.929,
+    "mission2": 0.151,
+    "total": 6.744
+  },
+  "status": "PASS",
+  "celery_workers": [
+    "celery@b2bc710785e9"
+  ],
+  "new_approved_version_ids": [
+    "0335d609-1029-4ffb-be89-1ebf1abff8b3"
+  ],
+  "finished_at": "2026-11-10T02:57:56.833460+00:00"
+}

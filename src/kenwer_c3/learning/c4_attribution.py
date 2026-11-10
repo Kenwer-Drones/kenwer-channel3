@@ -104,7 +104,8 @@ class AttributionAnalysisService:
                     discrepancy_report_id=disc_row.id if disc_row else None,
                     hypothesis=hypo.statement,
                     competing_group_id=group_id,
-                    confidence=hypo.confidence,
+                    # Stored numeric score is uncalibrated — see evidence_refs
+                    confidence=hypo.model_confidence_uncalibrated,
                     is_hypothesis_only=True,
                     model_id=meta.get("model_id"),
                     prompt_hash=meta.get("prompt_hash"),
@@ -117,6 +118,13 @@ class AttributionAnalysisService:
                         "uncertainty": hypo.uncertainty,
                         "correlation_only": hypo.correlation_only,
                         "claims_causation": hypo.claims_causation,
+                        "model_confidence_uncalibrated": hypo.model_confidence_uncalibrated,
+                        "evidence_support_label": hypo.evidence_support_label,
+                        "confidence_basis": "uncalibrated_model",
+                        "confidence_note": (
+                            "Numeric score is an uncalibrated model assignment, "
+                            "not a calibrated probability."
+                        ),
                     },
                 )
                 self.session.add(row)
@@ -124,7 +132,9 @@ class AttributionAnalysisService:
                     {
                         "id": str(row.id),
                         "statement": hypo.statement,
-                        "confidence": hypo.confidence,
+                        "model_confidence_uncalibrated": hypo.model_confidence_uncalibrated,
+                        "evidence_support_label": hypo.evidence_support_label,
+                        "confidence_basis": "uncalibrated_model",
                         "supporting_evidence": [
                             c.model_dump() for c in hypo.supporting_evidence
                         ],

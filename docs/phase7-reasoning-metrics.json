@@ -1,0 +1,9 @@
+{
+  "cases_run": 7,
+  "evidence_ref_invalid": 0,
+  "causation_claims": 0,
+  "abstentions": 2,
+  "lessons_generated": 9,
+  "provider": "mock",
+  "note": "Uncalibrated mock metrics \u2014 not real-world reliability"
+}

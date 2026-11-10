@@ -24,6 +24,7 @@ dependencies = [
   "opentelemetry-api>=1.28.0",
   "opentelemetry-sdk>=1.28.0",
   "python-multipart>=0.0.12",
+  "mcp>=1.6.0",  # SDK 2.x uses MCPServer (FastMCP renamed)
 ]
 
 [project.optional-dependencies]
@@ -35,6 +36,7 @@ dev = [
 
 [project.scripts]
 kenwer-c3 = "kenwer_c3.main:run"
+kenwer-c3-mcp = "kenwer_c3.mcp.server:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/kenwer_c3"]

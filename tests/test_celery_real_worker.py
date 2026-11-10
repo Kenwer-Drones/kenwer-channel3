@@ -1,7 +1,12 @@
-"""Real Celery worker execution against Postgres + Redis (not eager)."""
+"""Real Celery worker execution against Postgres + Redis (not eager).
+
+Uses the development database ``kenwer_c3`` because the Docker worker is
+wired to that database in docker-compose. Unit/API tests use ``kenwer_c3_test``.
+"""
 
 from __future__ import annotations
 
+import os
 import time
 import uuid
 
@@ -18,14 +23,21 @@ from fixtures.synthetic.mission1_thermal import (
 )
 from kenwer_c3.auth.bootstrap import ensure_dev_identity
 from kenwer_c3.db.models import DiscrepancyReport, LearningJob, LearningJobStatus
-from kenwer_c3.learning.pipeline import LearningPipeline
 from kenwer_c3.settings import get_settings
 from kenwer_c3.workers.celery_app import celery_app
 from kenwer_c3.workers.tasks import run_learning_job
 
+DEV_DATABASE_URL = "postgresql+psycopg://kenwer:kenwer@localhost:5433/kenwer_c3"
+
 
 def test_celery_broker_reachable_and_task_runs_against_postgres(auth_headers_admin):
+    # Align host-side settings with the Docker worker's database.
+    os.environ["DATABASE_URL"] = DEV_DATABASE_URL
+    os.environ["CELERY_TASK_ALWAYS_EAGER"] = "false"
+    get_settings.cache_clear()
     settings = get_settings()
+    assert settings.database_url.endswith("/kenwer_c3")
+
     # Redis broker must be reachable
     client = redis.from_url(settings.celery_broker_url, socket_connect_timeout=2)
     assert client.ping() is True
@@ -51,8 +63,6 @@ def test_celery_broker_reachable_and_task_runs_against_postgres(auth_headers_adm
     get_session_factory.cache_clear()
 
     # Create mission via API (eager path for setup only — job dispatch tested below)
-    import os
-
     os.environ["CELERY_TASK_ALWAYS_EAGER"] = "true"
     get_settings.cache_clear()
 
@@ -145,9 +155,21 @@ def test_celery_broker_reachable_and_task_runs_against_postgres(auth_headers_adm
     try:
         job = session.get(LearningJob, job_id)
         assert job is not None
+        # Live Docker worker is required for C6 acceptance (no in-process fallback).
+        # See scripts/verify_docker_c1_c6.py for the dedicated acceptance check.
+        if "C6" not in (job.stage_artifacts or {}):
+            pytest.fail(
+                "Celery job completed without C6 artifacts — rebuild/restart the "
+                "Docker worker image. Do not fall back to in-process execution."
+            )
         assert "C1" in job.stage_artifacts
         assert "C2" in job.stage_artifacts
         assert "C3" in job.stage_artifacts
+        assert "C4" in job.stage_artifacts
+        assert "C5" in job.stage_artifacts
+        assert "C6" in job.stage_artifacts
+        assert job.current_stage == "C6_done"
+        assert job.stage_artifacts["C6"]["publication_performed"] is False
         rows = (
             session.execute(
                 select(DiscrepancyReport).where(

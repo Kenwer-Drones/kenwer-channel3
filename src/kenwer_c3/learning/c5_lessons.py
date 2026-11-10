@@ -48,10 +48,15 @@ class CandidateLessonService:
                 abstain = abstain or True
                 abstain_reason = abstain_reason or analysis.get("abstain_reason")
             for h in analysis.get("hypotheses", []):
+                score = h.get(
+                    "model_confidence_uncalibrated",
+                    h.get("confidence", 0.0),
+                )
                 hypos.append(
                     AttributionHypothesisOut(
                         statement=h["statement"],
-                        confidence=h.get("confidence", 0.0),
+                        model_confidence_uncalibrated=float(score),
+                        evidence_support_label=h.get("evidence_support_label"),
                         supporting_evidence=[
                             EvidenceCitation(**c)
                             for c in h.get("supporting_evidence", [])
@@ -107,7 +112,17 @@ class CandidateLessonService:
                     "limitations": lesson.limitations,
                     "uncertainty": lesson.uncertainty,
                 },
-                evidence_refs={"supporting_evidence_ids": lesson.supporting_evidence_ids},
+                evidence_refs={
+                    "supporting_evidence_ids": lesson.supporting_evidence_ids,
+                    "contradictory_evidence_ids": lesson.contradictory_evidence_ids,
+                    "model_confidence_uncalibrated": lesson.model_confidence_uncalibrated,
+                    "evidence_support_label": lesson.evidence_support_label,
+                    "confidence_basis": "uncalibrated_model",
+                    "confidence_note": (
+                        "Numeric scores from the model are uncalibrated and are "
+                        "not calibrated probabilities."
+                    ),
+                },
                 safety_impact=safety,
                 is_hypothesis_only=True,
                 model_id=meta.get("model_id"),
@@ -120,6 +135,10 @@ class CandidateLessonService:
                     "claim": lesson.claim,
                     "applicability": lesson.applicability,
                     "supporting_evidence_ids": lesson.supporting_evidence_ids,
+                    "contradictory_evidence_ids": lesson.contradictory_evidence_ids,
+                    "model_confidence_uncalibrated": lesson.model_confidence_uncalibrated,
+                    "evidence_support_label": lesson.evidence_support_label,
+                    "confidence_basis": "uncalibrated_model",
                     "limitations": lesson.limitations,
                     "uncertainty": lesson.uncertainty,
                     "is_hypothesis_only": True,

@@ -30,6 +30,8 @@ class BeliefVersionRead(DomainModel):
     value_json: dict[str, Any]
     applicability: dict[str, Any]
     confidence: float
+    confidence_basis: str = "uncalibrated_model"
+    evidence_support_label: str | None = None
     approval_status: BeliefApprovalStatus
     safety_impact: SafetyImpact
     provenance: dict[str, Any]
