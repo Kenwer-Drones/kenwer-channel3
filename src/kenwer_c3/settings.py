@@ -47,6 +47,9 @@ class Settings(BaseSettings):
     llm_model: str = "gpt-4o-mini"
     llm_timeout_seconds: int = 30
     llm_max_retries: int = 2
+    # When false (default), production provider must not be used with real mission content
+    # without an operator explicitly enabling external LLM transmission.
+    llm_allow_external_mission_content: bool = False
 
     otel_enabled: bool = False
     beacon_enabled: bool = False

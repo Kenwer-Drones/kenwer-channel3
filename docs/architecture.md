@@ -71,8 +71,12 @@ Finalized (or evaluable) episodes enqueue Celery jobs:
 1. **C1** Episode reconstruction (chronological events, evidence refs, missing vs negative)
 2. **C2** Immutable expectation retrieval (reject if no sealed baseline)
 3. **C3** Deterministic metric evaluation → `discrepancy_reports` (no causation, no beliefs)
+4. **C4** Evidence context (episodic + persistent + approved consolidated) → competing attribution hypotheses (`attribution_hypotheses`). Correlation ≠ causation; abstention allowed.
+5. **C5** Candidate lessons (`candidate_lessons`) — hypothesis-only; **never** written to Persistent or Consolidated memory.
 
-C4–C6 (LLM attribution, candidates, reconciliation) and publication gates land in later phases. Consolidated memory is never written by C1–C3.
+C6 reconciliation and publication gates land in Phase 5. Reasoning uses `ReasoningProvider` (mock by default; optional OpenAI-compatible). Provider failures soft-fail after C3 without corrupting episodic memory.
+
+**Untrusted data rule:** mission logs, retrieved docs, and tool results are data, not instructions. Model outputs citing nonexistent evidence ids are rejected.
 
 ## Observability
 
