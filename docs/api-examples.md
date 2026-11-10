@@ -3,7 +3,7 @@
 Base URL: `http://localhost:8000`  
 Auth: `Authorization: Bearer <dev-*-key>`
 
-## Channel 2 — ingest
+## Channel 2 - ingest
 
 ### Upsert persistent fact
 
@@ -98,7 +98,7 @@ Authorization: Bearer dev-reviewer-key
 
 `REJECT` / `DEFER` leave consolidated memory unchanged. Failed validation returns **422** even for reviewers.
 
-## Channel 1 — retrieval
+## Channel 1 - retrieval
 
 ```http
 POST /v1/retrieve/cognitive-context

@@ -1,4 +1,4 @@
-"""Synthetic Mission 2 — planning-time retrieval after Mission 1 publication.
+"""Synthetic Mission 2 - planning-time retrieval after Mission 1 publication.
 
 All values labeled synthetic. Not real flight data.
 """

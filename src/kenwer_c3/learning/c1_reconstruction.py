@@ -1,4 +1,4 @@
-"""C1 — Episode Reconstruction."""
+"""C1 - Episode Reconstruction."""
 
 from __future__ import annotations
 
@@ -114,7 +114,7 @@ class EpisodeReconstructionService:
 
         missing_observations: list[str] = []
         negative_observations: list[str] = []
-        # Explicit missing_data on episode — absence, not a fabricated reading
+        # Explicit missing_data on episode - absence, not a fabricated reading
         for key, reason in (episode.missing_data or {}).items():
             missing_observations.append(f"{key}:{reason}")
 

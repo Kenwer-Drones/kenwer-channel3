@@ -1,4 +1,4 @@
-"""Audit log helper — never logs secrets or raw sensitive mission payloads by default."""
+"""Audit log helper - never logs secrets or raw sensitive mission payloads by default."""
 
 from __future__ import annotations
 

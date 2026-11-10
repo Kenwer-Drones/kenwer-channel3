@@ -16,7 +16,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from kenwer_c3.db.base import Base  # noqa: E402
-from kenwer_c3.db import models  # noqa: E402, F401 — register models on metadata
+from kenwer_c3.db import models  # noqa: E402, F401 - register models on metadata
 from kenwer_c3.settings import get_settings  # noqa: E402
 
 config = context.config

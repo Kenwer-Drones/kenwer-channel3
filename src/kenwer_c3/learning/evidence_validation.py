@@ -1,4 +1,4 @@
-"""Validate model outputs against retrieved evidence — reject nonexistent refs."""
+"""Validate model outputs against retrieved evidence - reject nonexistent refs."""
 
 from __future__ import annotations
 

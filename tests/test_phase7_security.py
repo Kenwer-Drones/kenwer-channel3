@@ -174,7 +174,7 @@ def test_forged_evidence_rejected_at_validation(db_session, tenant_and_identity)
 def test_prompt_injection_in_mission_log_does_not_publish(
     db_session, tenant_and_identity
 ):
-    """Injection text in payloads is untrusted data — must not auto-publish beliefs."""
+    """Injection text in payloads is untrusted data - must not auto-publish beliefs."""
     tenant, identity = tenant_and_identity
     svc = EpisodicMemoryService(db_session, _admin(tenant.id))
     ep = svc.create_episode(

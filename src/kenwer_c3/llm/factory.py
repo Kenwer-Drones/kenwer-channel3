@@ -1,4 +1,4 @@
-"""Resolve ReasoningProvider from settings — mock by default."""
+"""Resolve ReasoningProvider from settings - mock by default."""
 
 from __future__ import annotations
 

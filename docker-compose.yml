@@ -28,7 +28,7 @@ services:
       retries: 10
 
   # Official minio/minio Hub images are no longer pullable (source-only CE).
-  # Verified substitute pinned by digest — see docs/infrastructure-minio.md
+  # Verified substitute pinned by digest - see docs/infrastructure-minio.md
   minio:
     profiles: ["storage"]
     image: cleanstart/minio@sha256:3377f7b92aabe2bdca25d26c3b37fe7d3fdbf5057e461bbc87af34ebd6252aaf

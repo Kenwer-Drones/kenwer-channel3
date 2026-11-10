@@ -200,7 +200,7 @@ def test_mission_event_idempotency(db_session, tenant_and_identity):
 def test_belief_version_requires_approval_status_default(
     db_session, tenant_and_identity
 ):
-    """New belief versions start as proposed — not auto-approved into consolidated use."""
+    """New belief versions start as proposed - not auto-approved into consolidated use."""
     tenant, identity = tenant_and_identity
     belief = models.Belief(
         id=uuid.uuid4(),

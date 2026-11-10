@@ -1,4 +1,4 @@
-"""C3 — Deterministic Outcome Evaluation (no causation / no belief generation)."""
+"""C3 - Deterministic Outcome Evaluation (no causation / no belief generation)."""
 
 from __future__ import annotations
 

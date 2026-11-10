@@ -1,6 +1,6 @@
 """Request principal resolution from Bearer API keys.
 
-Never trust tenant_id / cognitive_identity_id from the request body alone —
+Never trust tenant_id / cognitive_identity_id from the request body alone -
 they must match the authenticated principal's verified scope.
 """
 

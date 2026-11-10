@@ -1,4 +1,4 @@
-"""Consolidated memory read service — approved beliefs only."""
+"""Consolidated memory read service - approved beliefs only."""
 
 from __future__ import annotations
 

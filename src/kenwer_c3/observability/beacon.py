@@ -1,4 +1,4 @@
-"""Asymptote Labs Agent Beacon — optional observability adapter boundary.
+"""Asymptote Labs Agent Beacon - optional observability adapter boundary.
 
 Disabled by default. Never stores authoritative mission knowledge.
 Never transmits mission content externally unless explicitly configured.
@@ -40,7 +40,7 @@ class NullBeaconAdapter:
 
 
 class LoggingBeaconAdapter:
-    """Local debug adapter — redacts mission payloads; never authoritative memory."""
+    """Local debug adapter - redacts mission payloads; never authoritative memory."""
 
     def __init__(self, settings: Settings):
         self._settings = settings

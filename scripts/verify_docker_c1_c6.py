@@ -79,7 +79,7 @@ def main() -> int:
     get_engine.cache_clear()
     get_session_factory.cache_clear()
 
-    # Setup mission via API with eager disabled — only ingest endpoints
+    # Setup mission via API with eager disabled - only ingest endpoints
     api = TestClient(create_app())
     headers = {"Authorization": "Bearer dev-admin-key"}
     identity_id = settings.dev_cognitive_identity_id

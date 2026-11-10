@@ -4,7 +4,7 @@
 
 - Bearer API keys with roles: `channel2_ingest`, `channel1_retrieve`, `reviewer`, `admin`
 - Tenant (and optional cognitive-identity) scope is taken from the **credential**, never trusted from request bodies alone
-- `DEV_API_KEYS` are for local development only — replace before any shared environment
+- `DEV_API_KEYS` are for local development only - replace before any shared environment
 
 ## Authorization highlights
 
@@ -37,7 +37,7 @@ Reviewer `APPROVE` cannot bypass knowledge validation (missing/forged evidence, 
 ## MinIO (object storage)
 
 - Optional for core memory/learning path
-- Community Hub `minio/minio` images are not pullable; local stack uses digest-pinned third-party `cleanstart/minio` — **local-dev only**, not a production security endorsement
+- Community Hub `minio/minio` images are not pullable; local stack uses digest-pinned third-party `cleanstart/minio` - **local-dev only**, not a production security endorsement
 - See `docs/infrastructure-minio.md`
 
 ## Agent Beacon

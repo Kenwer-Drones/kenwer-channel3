@@ -1,4 +1,4 @@
-"""Learning job and evaluation contracts (Phase 3 — C1–C3 only)."""
+"""Learning job and evaluation contracts (Phase 3 - C1–C3 only)."""
 
 from __future__ import annotations
 
@@ -102,7 +102,7 @@ class EpisodeReconstruction(DomainModel):
     events: list[ReconstructedEvent]
     evidence: list[EvidenceRef]
     data_quality: dict[str, Any]
-    # Explicit absences — never invent sensor values
+    # Explicit absences - never invent sensor values
     missing_observations: list[str] = Field(default_factory=list)
     negative_observations: list[str] = Field(default_factory=list)
 

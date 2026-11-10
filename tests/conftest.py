@@ -106,7 +106,7 @@ def engine(settings):
         ).fetchone()
         if row is None:
             pytest.fail(
-                "pgvector extension missing — run scripts/ensure_test_database.py "
+                "pgvector extension missing - run scripts/ensure_test_database.py "
                 "and alembic upgrade head against kenwer_c3_test."
             )
     # Apply migrations to the isolated test DB

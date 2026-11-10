@@ -1,7 +1,7 @@
 """Orchestrate C1→C6 for a learning job.
 
 C6 emits belief proposals only. Consolidated memory is never written by this
-pipeline — publication requires separate validation + authorized human review.
+pipeline - publication requires separate validation + authorized human review.
 """
 
 from __future__ import annotations

@@ -1,4 +1,4 @@
-"""Kenwer Channel 3 MCP server — four tool groups, no flight control.
+"""Kenwer Channel 3 MCP server - four tool groups, no flight control.
 
 Uses the official Python MCP SDK (FastMCP). Reuses existing backend services.
 Read-only by default; knowledge review requires reviewer/admin and cannot
@@ -61,7 +61,7 @@ def _auth(session, api_key: str | None):
 
 
 # ---------------------------------------------------------------------------
-# Group 1 — Memory retrieval (read-only)
+# Group 1 - Memory retrieval (read-only)
 # ---------------------------------------------------------------------------
 
 
@@ -195,7 +195,7 @@ def list_persistent_facts(
 
 
 # ---------------------------------------------------------------------------
-# Group 2 — Mission evidence retrieval (read-only)
+# Group 2 - Mission evidence retrieval (read-only)
 # ---------------------------------------------------------------------------
 
 
@@ -262,7 +262,7 @@ def list_mission_events(episode_id: str, api_key: str | None = None) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Group 3 — Offline evaluation job submission / status
+# Group 3 - Offline evaluation job submission / status
 # ---------------------------------------------------------------------------
 
 
@@ -343,7 +343,7 @@ def get_learning_job_status(job_id: str, api_key: str | None = None) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Group 4 — Knowledge review submission (reviewer/admin only)
+# Group 4 - Knowledge review submission (reviewer/admin only)
 # ---------------------------------------------------------------------------
 
 
@@ -353,7 +353,7 @@ def get_learning_job_status(job_id: str, api_key: str | None = None) -> str:
         "Submit APPROVE/REJECT/DEFER for a belief proposal. "
         "Cannot bypass knowledge validation. Cannot directly edit published "
         "belief content outside the publication service. CHALLENGE approvals "
-        "flag only — they do not replace published beliefs."
+        "flag only - they do not replace published beliefs."
     ),
 )
 def submit_knowledge_review(

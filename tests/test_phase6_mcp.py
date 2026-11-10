@@ -151,7 +151,7 @@ async def test_mcp_review_cannot_bypass_validation(engine):
         job = LearningJob(
             id=uuid.uuid4(),
             tenant_id=uuid.UUID(settings.dev_tenant_id),
-            episode_id=uuid.uuid4(),  # may violate FK — create episode first
+            episode_id=uuid.uuid4(),  # may violate FK - create episode first
             cognitive_identity_id=uuid.UUID(settings.dev_cognitive_identity_id),
             status=LearningJobStatus.completed,
             stage_artifacts={},
@@ -217,5 +217,5 @@ async def test_mcp_review_cannot_bypass_validation(engine):
                 },
             )
             assert result.get("status_code") == 422
-            # Consolidated memory unchanged — proposal not published
+            # Consolidated memory unchanged - proposal not published
             assert result.get("consolidated_memory_changed") is not True

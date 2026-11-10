@@ -79,7 +79,7 @@ src/kenwer_c3/
 | Redis | Celery broker/backend | host `6380` → container `6379` |
 | MinIO (S3) | Evidence blobs | `9000` / console `9001` |
 | FastAPI | Sync APIs | `8000` |
-| Celery worker | Async learning jobs | — |
+| Celery worker | Async learning jobs | - |
 
 ## Memory families
 
@@ -103,10 +103,10 @@ Publication is transactional and exclusive to `BeliefPublicationService` after k
 
 Bearer API keys with roles:
 
-- `channel2_ingest` — events, facts, episode lifecycle
-- `channel1_retrieve` — approved beliefs / later context retrieve
-- `reviewer` — belief proposal review / rollback
-- `admin` — all of the above
+- `channel2_ingest` - events, facts, episode lifecycle
+- `channel1_retrieve` - approved beliefs / later context retrieve
+- `reviewer` - belief proposal review / rollback
+- `admin` - all of the above
 
 Credentials bind to a tenant (and optionally a cognitive identity). Cross-tenant access is denied.
 
@@ -118,7 +118,7 @@ Finalized (or evaluable) episodes enqueue Celery jobs:
 2. **C2** Immutable expectation retrieval (reject if no sealed baseline)
 3. **C3** Deterministic metric evaluation → `discrepancy_reports` (no causation, no beliefs)
 4. **C4** Evidence context (episodic + persistent + approved consolidated) → competing attribution hypotheses (`attribution_hypotheses`). Correlation ≠ causation; abstention allowed. Scores are uncalibrated + labeled.
-5. **C5** Candidate lessons (`candidate_lessons`) — hypothesis-only; **never** written to Persistent or Consolidated memory.
+5. **C5** Candidate lessons (`candidate_lessons`) - hypothesis-only; **never** written to Persistent or Consolidated memory.
 6. **C6** Belief reconciliation → `belief_proposals` (`CREATE|REINFORCE|REFINE|REVISE|CHALLENGE`, plus `INSUFFICIENT_EVIDENCE|REDUNDANT|INCONCLUSIVE`). **Never publishes.**
 
 **Publication path (separate from the learning job):** knowledge validation (fail-closed) → authorized human `APPROVE|REJECT|DEFER` → transactional publish / supersede / rollback via `BeliefPublicationService`. Reviewer approval cannot bypass failed validation. Cross-tenant review is denied.
@@ -132,9 +132,9 @@ Similarity policy for C6 candidate matching and Channel 1 ranking is documented 
 ### Review APIs
 
 - `GET /v1/proposals` / `GET /v1/proposals/{id}`
-- `POST /v1/proposals/{id}/review` — `APPROVE` | `REJECT` | `DEFER`
-- `POST /v1/beliefs/{id}/review` — review latest pending proposal targeting a belief
-- `POST /v1/beliefs/{id}/rollback` — restore a prior version (append-only history)
+- `POST /v1/proposals/{id}/review` - `APPROVE` | `REJECT` | `DEFER`
+- `POST /v1/beliefs/{id}/review` - review latest pending proposal targeting a belief
+- `POST /v1/beliefs/{id}/rollback` - restore a prior version (append-only history)
 
 ### Channel 1 cognitive retrieval
 
@@ -144,10 +144,10 @@ Similarity policy for C6 candidate matching and Channel 1 ranking is documented 
 
 Entry: `kenwer-c3-mcp` / `python -m kenwer_c3.mcp.server` (stdio). Auth via `KENWER_MCP_API_KEY` (same RBAC as REST).
 
-1. Memory retrieval — `retrieve_cognitive_context`, `list_approved_beliefs`, `list_persistent_facts`
-2. Mission evidence — `get_mission_episode`, `list_mission_events`
-3. Offline evaluation — `submit_learning_job`, `get_learning_job_status`
-4. Knowledge review — `submit_knowledge_review` (reviewer/admin; validation fail-closed; no direct published-memory mutation outside publication service)
+1. Memory retrieval - `retrieve_cognitive_context`, `list_approved_beliefs`, `list_persistent_facts`
+2. Mission evidence - `get_mission_episode`, `list_mission_events`
+3. Offline evaluation - `submit_learning_job`, `get_learning_job_status`
+4. Knowledge review - `submit_knowledge_review` (reviewer/admin; validation fail-closed; no direct published-memory mutation outside publication service)
 
 No MAVLink / flight-control tools.
 
@@ -161,7 +161,7 @@ Automated pytest uses `kenwer_c3_test` (see `tests/conftest.py`). Development da
 
 ## Observability
 
-OpenTelemetry optional. Agent Beacon optional and disabled by default — never the system of record for mission memory.
+OpenTelemetry optional. Agent Beacon optional and disabled by default - never the system of record for mission memory.
 
 ## Object storage note
 

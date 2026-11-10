@@ -120,7 +120,7 @@ class MockReasoningProvider:
                     )
                 )
             else:
-                # Missing wind measurement — still offer camera hypothesis with gaps
+                # Missing wind measurement - still offer camera hypothesis with gaps
                 pass
 
             # Competing hypothesis 2: camera / payload configuration

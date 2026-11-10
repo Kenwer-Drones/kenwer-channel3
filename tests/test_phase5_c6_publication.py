@@ -318,21 +318,21 @@ def test_five_revision_operations_and_abstentions(db_session, tenant_and_identit
 
     # INSUFFICIENT_EVIDENCE
     _add_lesson("No evidence claim", {"mission_type": "thermal_inspection"}, [], "insufficient")
-    # REDUNDANT — identical claim + subset evidence
+    # REDUNDANT - identical claim + subset evidence
     _add_lesson(
         v1.statement,
         {"mission_type": "thermal_inspection", "platform_type": "quadrotor"},
         evidence_ids[:1],
         "moderate",
     )
-    # REINFORCE — same claim + new evidence
+    # REINFORCE - same claim + new evidence
     _add_lesson(
         v1.statement,
         {"mission_type": "thermal_inspection", "platform_type": "quadrotor"},
         evidence_ids,
         "moderate",
     )
-    # REFINE — same claim, tighter/different app overlap
+    # REFINE - same claim, tighter/different app overlap
     _add_lesson(
         v1.statement,
         {
@@ -344,21 +344,21 @@ def test_five_revision_operations_and_abstentions(db_session, tenant_and_identit
         evidence_ids,
         "moderate",
     )
-    # REVISE — related but changed statement
+    # REVISE - related but changed statement
     _add_lesson(
         "Elevated wind correlates with reduced thermal image quality and may require lower altitude passes.",
         {"mission_type": "thermal_inspection", "platform_type": "quadrotor"},
         evidence_ids,
         "moderate",
     )
-    # CHALLENGE — overlapping claim, mismatched platform
+    # CHALLENGE - overlapping claim, mismatched platform
     _add_lesson(
         "Elevated wind may correlate with reduced thermal image quality for this platform (correlation only).",
         {"mission_type": "thermal_inspection", "platform_type": "fixed_wing"},
         evidence_ids,
         "moderate",
     )
-    # CREATE — unrelated claim
+    # CREATE - unrelated claim
     _add_lesson(
         "Battery temperature spikes after prolonged hover in summer heat.",
         {"mission_type": "thermal_inspection", "platform_type": "quadrotor"},
@@ -390,7 +390,7 @@ def test_fabricated_evidence_fails_validation(db_session, tenant_and_identity):
     proposal = BeliefProposal(
         id=uuid.uuid4(),
         tenant_id=tenant.id,
-        learning_job_id=uuid.uuid4(),  # will fail FK — use real job
+        learning_job_id=uuid.uuid4(),  # will fail FK - use real job
         candidate_lesson_id=None,
         target_belief_id=None,
         cognitive_identity_id=identity.id,
@@ -867,7 +867,7 @@ def test_api_review_endpoints(client, seeded_dev_identity, auth_headers_admin, a
     )
     assert denied.status_code == 403
 
-    # May fail validation (applicability) — accept 200 published or 422
+    # May fail validation (applicability) - accept 200 published or 422
     reviewed = client.post(
         f"/v1/proposals/{pid}/review",
         headers=auth_headers_reviewer,

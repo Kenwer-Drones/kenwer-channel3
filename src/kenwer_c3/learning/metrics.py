@@ -1,7 +1,7 @@
 """Typed metric registry for deterministic outcome evaluation.
 
 No causation inference. Unknown metrics / unit mismatches yield unknown or fail-closed
-results — never invented sensor values.
+results - never invented sensor values.
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ def get_metric(name: str) -> MetricDefinition | None:
 
 
 def resolve_path(data: dict, path: str):
-    """Resolve dotted path; returns None if missing — never invents values."""
+    """Resolve dotted path; returns None if missing - never invents values."""
     cur = data
     for part in path.split("."):
         if not isinstance(cur, dict) or part not in cur:

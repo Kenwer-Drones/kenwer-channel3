@@ -1,4 +1,4 @@
-"""Cognitive Retrieval Engine — Channel 1 context assembly.
+"""Cognitive Retrieval Engine - Channel 1 context assembly.
 
 Sequence:
 1. Authenticate via Principal (caller)
@@ -118,7 +118,7 @@ class CognitiveRetrievalEngine:
                 },
             )
         except Exception:  # noqa: BLE001
-            # Audit best-effort — retrieval must still succeed
+            # Audit best-effort - retrieval must still succeed
             notes.append("audit_write_skipped")
 
         return CognitiveContextResponse(
@@ -256,7 +256,7 @@ class CognitiveRetrievalEngine:
                     )
                     method = "local_embedding+applicability"
                 # Similarity never overrides a failed applicability filter (already applied)
-                # and never alone decides inclusion — require non-hard-mismatch already done.
+                # and never alone decides inclusion - require non-hard-mismatch already done.
 
             # Combined ranking: applicability dominates; semantic is tie-break / boost
             rank = (0.7 * app_score) + (0.3 * max(semantic, 0.0))

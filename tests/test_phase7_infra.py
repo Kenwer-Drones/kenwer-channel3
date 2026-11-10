@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_migrations_apply_to_fresh_database():
-    """Create a throwaway DB, upgrade head, then drop — does not touch kenwer_c3."""
+    """Create a throwaway DB, upgrade head, then drop - does not touch kenwer_c3."""
     import psycopg
 
     from kenwer_c3.settings import get_settings
@@ -33,7 +33,7 @@ def test_migrations_apply_to_fresh_database():
         with eng.connect() as c:
             c.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
             c.commit()
-        # alembic/env.py reads get_settings().database_url — set env explicitly
+        # alembic/env.py reads get_settings().database_url - set env explicitly
         os.environ["DATABASE_URL"] = url
         get_settings.cache_clear()
         cfg = Config(str(ROOT / "alembic.ini"))

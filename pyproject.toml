@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "kenwer-c3"
 version = "0.1.0"
-description = "Kenwer Channel 3 — Cognitive Identity Layer"
+description = "Kenwer Channel 3 - Cognitive Identity Layer"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

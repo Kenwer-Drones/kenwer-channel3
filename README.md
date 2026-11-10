@@ -1,4 +1,4 @@
-# Kenwer Channel 3 — Cognitive Identity Layer
+# Kenwer Channel 3 - Cognitive Identity Layer
 
 Channel 3 owns **persistent**, **episodic**, and **consolidated** cognitive memory for Kenwer Drones. It evaluates mission outcomes, generates evidence-linked candidate lessons, revises beliefs through gated human review, and returns decision-support context to Channel 1.
 

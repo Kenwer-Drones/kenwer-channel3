@@ -1,4 +1,4 @@
-"""Persistent memory service — versioned durable facts with provenance."""
+"""Persistent memory service - versioned durable facts with provenance."""
 
 from __future__ import annotations
 
@@ -114,7 +114,7 @@ class PersistentMemoryService:
                 message="Created persistent fact version 1",
             )
 
-        # Identical value — idempotent no-op
+        # Identical value - idempotent no-op
         if active.value_json == payload.value_json:
             return PersistentFactWriteResult(
                 fact=PersistentFactRead.model_validate(active),
@@ -122,7 +122,7 @@ class PersistentMemoryService:
                 message="Active fact unchanged (idempotent)",
             )
 
-        # Conflict without controlled update — refuse silent overwrite
+        # Conflict without controlled update - refuse silent overwrite
         if not payload.allow_controlled_update:
             write_audit(
                 self.session,

@@ -271,7 +271,7 @@ def test_provider_failure_soft_fails_without_corrupting_c3(
     )
     finished = LearningPipeline(db_session, _BadJsonProvider()).run(job.id)
     # C4 catches provider error per discrepancy and continues; overall may complete
-    # with abstain entries — or soft-fail. Either way C3 artifacts remain.
+    # with abstain entries - or soft-fail. Either way C3 artifacts remain.
     assert "C3" in finished.stage_artifacts
     assert finished.stage_artifacts["C3"]["summary"]["beliefs_generated"] is False
 
@@ -308,7 +308,7 @@ def test_cross_tenant_evidence_not_in_context(
 ):
     tenant, identity = tenant_and_identity
     other_tenant, other_identity = other_tenant_identity
-    # Seed a belief on other tenant — must not appear in context
+    # Seed a belief on other tenant - must not appear in context
     b = Belief(
         id=uuid.uuid4(),
         tenant_id=other_tenant.id,

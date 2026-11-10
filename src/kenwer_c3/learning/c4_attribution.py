@@ -1,4 +1,4 @@
-"""C4 — Evidence & Attribution Analysis (hypotheses only)."""
+"""C4 - Evidence & Attribution Analysis (hypotheses only)."""
 
 from __future__ import annotations
 
@@ -104,7 +104,7 @@ class AttributionAnalysisService:
                     discrepancy_report_id=disc_row.id if disc_row else None,
                     hypothesis=hypo.statement,
                     competing_group_id=group_id,
-                    # Stored numeric score is uncalibrated — see evidence_refs
+                    # Stored numeric score is uncalibrated - see evidence_refs
                     confidence=hypo.model_confidence_uncalibrated,
                     is_hypothesis_only=True,
                     model_id=meta.get("model_id"),

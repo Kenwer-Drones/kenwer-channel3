@@ -1,6 +1,6 @@
 """Labeled synthetic cases for reasoning-quality evaluation (mock provider).
 
-Expectations are fixture contracts — not claims of calibrated real-world reliability.
+Expectations are fixture contracts - not claims of calibrated real-world reliability.
 """
 
 from __future__ import annotations
@@ -61,7 +61,7 @@ CASES: list[dict[str, Any]] = [
         "image_quality_score": 0.95,  # contradictory to fail narrative; C3 may pass
         "force_fail_discrepancy": False,
         "expect": {
-            # When quality passes, mock may abstain — acceptable
+            # When quality passes, mock may abstain - acceptable
             "allow_abstain_or_hypotheses": True,
             "claims_causation_forbidden": True,
             "all_evidence_ids_valid": True,
@@ -69,7 +69,7 @@ CASES: list[dict[str, Any]] = [
     },
     {
         "id": "misleading_correlation",
-        "description": "Wind co-occurs with quality drop — must remain correlation_only",
+        "description": "Wind co-occurs with quality drop - must remain correlation_only",
         "include_wind": True,
         "include_quality": True,
         "image_quality_score": 0.50,

@@ -7,7 +7,7 @@ Channel 1 plans and validates missions. Channel 3 supplies **approved** cognitiv
 1. Authenticate with a `channel1_retrieve` (or admin/reviewer) API key
 2. `POST /v1/retrieve/cognitive-context` with identity, mission/platform/site/fleet/environment, optional query text
 3. Consume `persistent_facts` + `approved_beliefs` (+ optional episodic historical context)
-4. Apply Channel 1’s own validation — Channel 3 retrieval **never** issues flight commands
+4. Apply Channel 1’s own validation - Channel 3 retrieval **never** issues flight commands
 
 ## Guarantees
 

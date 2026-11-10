@@ -1,4 +1,4 @@
-"""Episodic memory service — missions, immutable expectations, append-only events."""
+"""Episodic memory service - missions, immutable expectations, append-only events."""
 
 from __future__ import annotations
 
@@ -184,7 +184,7 @@ class EpisodicMemoryService:
                     "approval. Retroactive changes to success criteria are forbidden."
                 ),
             )
-        # No snapshot yet — treat as freeze
+        # No snapshot yet - treat as freeze
         self.freeze_expectation(episode_id, payload)
 
     def ingest_event(self, payload: MissionEventIngest) -> MissionEventIngestResult:

@@ -1,4 +1,4 @@
-# Reconciliation similarity — limitations and policy
+# Reconciliation similarity - limitations and policy
 
 ## Token Jaccard (temporary lexical fallback)
 
@@ -9,7 +9,7 @@ fallback** when comparing candidate lessons to published beliefs.
 
 - Sensitive to wording and tokenization; paraphrases score low even when meaning matches.
 - Blind to negation / modality (“may correlate” vs “does not correlate”).
-- Does not encode platform/site/fleet semantics — those must come from applicability fields.
+- Does not encode platform/site/fleet semantics - those must come from applicability fields.
 - Overlap scores are **not** calibrated probabilities of agreement.
 
 ## Semantic candidate retrieval

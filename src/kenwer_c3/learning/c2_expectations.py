@@ -1,4 +1,4 @@
-"""C2 — Expectation Retrieval (immutable baseline only)."""
+"""C2 - Expectation Retrieval (immutable baseline only)."""
 
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ class ExpectationRetrievalService:
                 status_code=status.HTTP_409_CONFLICT,
                 detail=(
                     "No pre-execution expectation snapshot available. "
-                    "Evaluation rejected — baselines are never generated retroactively."
+                    "Evaluation rejected - baselines are never generated retroactively."
                 ),
             )
         if not snap.is_sealed:

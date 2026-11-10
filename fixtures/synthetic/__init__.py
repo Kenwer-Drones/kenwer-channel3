@@ -1,1 +1,1 @@
-"""Synthetic mission fixtures — not real sensor data."""
+"""Synthetic mission fixtures - not real sensor data."""

@@ -1,4 +1,4 @@
-"""C6 — Belief Reconciliation.
+"""C6 - Belief Reconciliation.
 
 Compares candidate lessons to published consolidated beliefs and emits
 structured proposals. Never publishes; never writes BeliefVersion approval
@@ -51,7 +51,7 @@ def _tokens(text: str) -> set[str]:
 
 
 def _jaccard(a: set[str], b: set[str]) -> float:
-    """Temporary lexical fallback — see docs/reconciliation-similarity.md."""
+    """Temporary lexical fallback - see docs/reconciliation-similarity.md."""
     if not a or not b:
         return 0.0
     return len(a & b) / len(a | b)
@@ -109,7 +109,7 @@ def _candidate_rank(
     else:
         semantic = cosine_similarity(lesson_vec, embed_text(version_statement))
         method = "local_embedding+jaccard_fallback"
-    # Combined retrieval score for candidate selection — NOT agreement
+    # Combined retrieval score for candidate selection - NOT agreement
     combined = max(lexical, 0.6 * semantic + 0.4 * lexical)
     return combined, lexical, method
 
@@ -319,7 +319,7 @@ class BeliefReconciliationService:
                 for x in (version.provenance or {}).get("supporting_evidence_ids", [])
             )
             new_support = set(grounded)
-            # Decision thresholds use structured applicability + lexical fallback —
+            # Decision thresholds use structured applicability + lexical fallback -
             # not semantic score alone.
             claim_sim = lexical
 

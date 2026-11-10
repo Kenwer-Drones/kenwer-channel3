@@ -1,4 +1,4 @@
-"""Learning job APIs — enqueue C1–C6 evaluation (proposals only; no auto-publish)."""
+"""Learning job APIs - enqueue C1–C6 evaluation (proposals only; no auto-publish)."""
 
 from __future__ import annotations
 

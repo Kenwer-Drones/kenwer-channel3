@@ -62,7 +62,7 @@ def test_celery_broker_reachable_and_task_runs_against_postgres(auth_headers_adm
     get_engine.cache_clear()
     get_session_factory.cache_clear()
 
-    # Create mission via API (eager path for setup only — job dispatch tested below)
+    # Create mission via API (eager path for setup only - job dispatch tested below)
     os.environ["CELERY_TASK_ALWAYS_EAGER"] = "true"
     get_settings.cache_clear()
 
@@ -143,7 +143,7 @@ def test_celery_broker_reachable_and_task_runs_against_postgres(auth_headers_adm
         time.sleep(0.5)
 
     if finished is None:
-        # No external worker consumed the message — run task in-process still using
+        # No external worker consumed the message - run task in-process still using
         # the same Celery task function and live Postgres session factory.
         payload = run_learning_job.apply(args=[str(job_id)]).get(timeout=60)
         assert payload["status"] == "completed"
@@ -159,7 +159,7 @@ def test_celery_broker_reachable_and_task_runs_against_postgres(auth_headers_adm
         # See scripts/verify_docker_c1_c6.py for the dedicated acceptance check.
         if "C6" not in (job.stage_artifacts or {}):
             pytest.fail(
-                "Celery job completed without C6 artifacts — rebuild/restart the "
+                "Celery job completed without C6 artifacts - rebuild/restart the "
                 "Docker worker image. Do not fall back to in-process execution."
             )
         assert "C1" in job.stage_artifacts

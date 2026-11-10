@@ -1,4 +1,4 @@
-"""Consolidated memory contracts (B3) — published beliefs only for retrieval."""
+"""Consolidated memory contracts (B3) - published beliefs only for retrieval."""
 
 from __future__ import annotations
 

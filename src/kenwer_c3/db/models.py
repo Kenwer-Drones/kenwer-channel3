@@ -85,7 +85,7 @@ class BeliefProposalOperation(str, enum.Enum):
 
 
 class EvidenceSupportLabel(str, enum.Enum):
-    """Discrete evidence-support labels — not calibrated probabilities."""
+    """Discrete evidence-support labels - not calibrated probabilities."""
 
     insufficient = "insufficient"
     weak = "weak"
@@ -121,7 +121,7 @@ class ValidationAction(str, enum.Enum):
 
 
 class MemoryFamily(str, enum.Enum):
-    """Logical memory family — kept as an enum for routing/audit clarity."""
+    """Logical memory family - kept as an enum for routing/audit clarity."""
 
     persistent = "persistent"
     episodic = "episodic"
@@ -238,7 +238,7 @@ class AuditLog(Base):
 
 
 # ---------------------------------------------------------------------------
-# B1 — Persistent memory
+# B1 - Persistent memory
 # ---------------------------------------------------------------------------
 
 
@@ -308,7 +308,7 @@ class PersistentFact(Base):
 
 
 # ---------------------------------------------------------------------------
-# B2 — Episodic memory
+# B2 - Episodic memory
 # ---------------------------------------------------------------------------
 
 
@@ -411,7 +411,7 @@ class ExpectationSnapshot(Base):
         ForeignKey("cognitive_identities.id", ondelete="CASCADE"),
         nullable=False,
     )
-    # Frozen payload — never mutate after insert (DB trigger enforces when is_sealed)
+    # Frozen payload - never mutate after insert (DB trigger enforces when is_sealed)
     criteria_json: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     metric_baselines: Mapped[dict[str, Any]] = mapped_column(
         JSONB, nullable=False, server_default=text("'{}'::jsonb")
@@ -536,7 +536,7 @@ class EvidenceArtifact(Base):
 
 
 # ---------------------------------------------------------------------------
-# B3 — Consolidated memory (beliefs + versions; publication gated)
+# B3 - Consolidated memory (beliefs + versions; publication gated)
 # ---------------------------------------------------------------------------
 
 
@@ -910,7 +910,7 @@ class CandidateLesson(Base):
 
 
 class BeliefProposal(Base):
-    """C6 reconciliation output — never auto-published into consolidated memory."""
+    """C6 reconciliation output - never auto-published into consolidated memory."""
 
     __tablename__ = "belief_proposals"
     __table_args__ = (

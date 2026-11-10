@@ -1,4 +1,4 @@
-# AGENTS.md — Kenwer Channel 3 Architectural Constraints
+# AGENTS.md - Kenwer Channel 3 Architectural Constraints
 
 These rules are permanent. Do not weaken them for convenience, demos, or LLM convenience.
 
@@ -40,7 +40,7 @@ Never collapse these into one generic vector / document table.
 - LLM outputs are hypotheses (`hypothesis_only=true`) until reviewed.
 - Candidate lessons and belief proposals are **not** consolidated memory.
 - LLM numeric confidence scores are **uncalibrated model scores**, not calibrated probabilities. Prefer discrete `evidence_support_label` values (`insufficient|weak|moderate|strong`) and persist `confidence_basis`.
-- C4–C5 write attribution/candidate tables only — they must never modify published belief content, `current_version_id`, or approval state.
+- C4–C5 write attribution/candidate tables only - they must never modify published belief content, `current_version_id`, or approval state.
 - C6 emits reconciliation proposals (`CREATE|REINFORCE|REFINE|REVISE|CHALLENGE` plus non-publication outcomes). Model proposals never publish directly.
 - Knowledge validation is fail-closed (missing evidence, unknown safety impact, fabricated refs, authoritative flight/regulatory override attempts).
 - Every new publication in the MVP requires authorized human reviewer `APPROVE` after validation passes. `REJECT` / `DEFER` leave consolidated memory unchanged. Reviewers cannot bypass failed validation.
@@ -56,7 +56,7 @@ Never collapse these into one generic vector / document table.
 
 - Channel 1 retrieval returns approved/active knowledge only; never proposed, rejected, superseded, or rolled-back beliefs as validated knowledge.
 - Apply deterministic tenant, identity, platform, site, mission, environment, and applicability filters **before** any semantic ranking.
-- Similarity (Jaccard fallback or embeddings) ranks candidates only — never alone decides agreement, contradiction, or authorization.
+- Similarity (Jaccard fallback or embeddings) ranks candidates only - never alone decides agreement, contradiction, or authorization.
 - MCP tools reuse backend services with the same API-key RBAC, tenant isolation, and audit controls as REST. Read-only by default; review tools require reviewer/admin and cannot bypass validation.
 - Never expose MAVLink or flight-control tools via MCP.
 - Agent Beacon is optional and disabled by default; never store authoritative mission knowledge there.

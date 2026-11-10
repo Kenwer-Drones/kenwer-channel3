@@ -107,7 +107,7 @@ class CandidateLessonOut(BaseModel):
         default=None,
         ge=0.0,
         le=1.0,
-        description="Optional uncalibrated model score — not a calibrated probability.",
+        description="Optional uncalibrated model score - not a calibrated probability.",
     )
     evidence_support_label: EvidenceSupportLabelLiteral | None = None
 

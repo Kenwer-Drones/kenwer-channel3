@@ -32,7 +32,7 @@ def applicability_hard_mismatch(
 ) -> bool:
     """True when a declared dimension conflicts (hard filter fail).
 
-    Missing dimensions on either side do not fail — only explicit conflicts.
+    Missing dimensions on either side do not fail - only explicit conflicts.
     """
     app = record_applicability or {}
     for key in _SCOPE_KEYS:

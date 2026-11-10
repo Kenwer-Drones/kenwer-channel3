@@ -1,4 +1,4 @@
-"""Consolidated memory read path — approved only."""
+"""Consolidated memory read path - approved only."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ def _seed_beliefs(engine, identity_id: uuid.UUID, tenant_id: uuid.UUID) -> uuid.
             belief_id=belief.id,
             cognitive_identity_id=identity_id,
             version=1,
-            statement="Unreviewed hypothesis — must not appear in retrieval.",
+            statement="Unreviewed hypothesis - must not appear in retrieval.",
             value_json={"wind_limit_mps": 6.0},
             applicability={"mission_type": "thermal_inspection"},
             confidence=0.4,

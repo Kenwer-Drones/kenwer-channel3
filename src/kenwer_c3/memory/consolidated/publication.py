@@ -95,7 +95,7 @@ class BeliefPublicationService:
         if action != ValidationAction.approve:
             raise HTTPException(status_code=400, detail=f"Unknown action {action}")
 
-        # CHALLENGE: flag only — never replace published content
+        # CHALLENGE: flag only - never replace published content
         if proposal.operation == BeliefProposalOperation.CHALLENGE:
             report = KnowledgeValidationService(
                 self.session, proposal.tenant_id
@@ -114,7 +114,7 @@ class BeliefPublicationService:
                         status, "HTTP_422_UNPROCESSABLE_CONTENT", 422
                     ),
                     detail={
-                        "message": "Challenge validation failed — approval denied",
+                        "message": "Challenge validation failed - approval denied",
                         "validation": report.to_dict(),
                     },
                 )
@@ -125,14 +125,14 @@ class BeliefPublicationService:
             proposal.reviewed_at = now
             proposal.validation_report = report.to_dict()
             if proposal.target_belief_id:
-                # Annotate belief updated_at only — do not change current_version
+                # Annotate belief updated_at only - do not change current_version
                 belief = self.session.get(Belief, proposal.target_belief_id)
                 if belief is not None:
                     belief.updated_at = now
             self.session.flush()
             return self._result(proposal, published_version=None, challenge_flagged=True)
 
-        # Full validation required — reviewer cannot bypass failures
+        # Full validation required - reviewer cannot bypass failures
         report = KnowledgeValidationService(
             self.session, proposal.tenant_id
         ).validate_proposal(proposal)
@@ -143,7 +143,7 @@ class BeliefPublicationService:
                 status_code=getattr(status, "HTTP_422_UNPROCESSABLE_CONTENT", 422),
                 detail={
                     "message": (
-                        "Validation failed — reviewer approval cannot bypass "
+                        "Validation failed - reviewer approval cannot bypass "
                         "failed checks"
                     ),
                     "validation": report.to_dict(),

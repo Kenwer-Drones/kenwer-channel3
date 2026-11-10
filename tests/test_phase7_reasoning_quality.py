@@ -324,7 +324,7 @@ def test_reasoning_quality_report_summary(db_session, tenant_and_identity):
         "abstentions": 0,
         "lessons_generated": 0,
         "provider": "mock",
-        "note": "Uncalibrated mock metrics — not real-world reliability",
+        "note": "Uncalibrated mock metrics - not real-world reliability",
     }
     pipeline_cases = [c for c in CASES if not c.get("mode")]
     for case in pipeline_cases:

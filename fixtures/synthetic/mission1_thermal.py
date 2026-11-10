@@ -1,4 +1,4 @@
-"""Synthetic Mission 1 — thermal inspection with below-threshold image quality.
+"""Synthetic Mission 1 - thermal inspection with below-threshold image quality.
 
 All sensor values are explicitly labeled synthetic. Do not treat as real flight data.
 """

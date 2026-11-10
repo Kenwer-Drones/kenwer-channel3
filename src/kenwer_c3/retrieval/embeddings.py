@@ -2,7 +2,7 @@
 
 Uses a fixed hashing / bag-of-tokens projection into 384 dims so pgvector
 cosine distance works without an external embedding API. This is for
-**candidate retrieval ranking only** — never for agreement/contradiction
+**candidate retrieval ranking only** - never for agreement/contradiction
 decisions or authorization.
 """
 

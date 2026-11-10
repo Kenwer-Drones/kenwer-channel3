@@ -1,4 +1,4 @@
-# Phase 7 Final Report — End-to-End Validation & Hardening
+# Phase 7 Final Report - End-to-End Validation & Hardening
 
 **Date:** 2026-11-10 (local)  
 **Scope:** Phase 7 only (no hardware integration, no production deploy)
@@ -9,7 +9,7 @@
 |-------|--------|
 | Full `pytest` (isolated `kenwer_c3_test`) | **105 passed, 1 skipped** |
 | Live Docker C1–C6 (`scripts/verify_docker_c1_c6.py`) | **PASS** (prior Phase 6 + rebuilt images) |
-| Live Mission 1→2 E2E (`scripts/e2e_mission1_mission2.py`) | **PASS** — see `docs/phase7-e2e-results.json` |
+| Live Mission 1→2 E2E (`scripts/e2e_mission1_mission2.py`) | **PASS** - see `docs/phase7-e2e-results.json` |
 | Real MCP client/server | Covered in pytest (`test_phase6_mcp.py`) |
 
 ### Skipped / BLOCKED

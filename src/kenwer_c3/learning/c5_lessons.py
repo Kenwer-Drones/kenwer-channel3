@@ -1,4 +1,4 @@
-"""C5 — Candidate Lesson Generation (never writes consolidated/persistent memory)."""
+"""C5 - Candidate Lesson Generation (never writes consolidated/persistent memory)."""
 
 from __future__ import annotations
 

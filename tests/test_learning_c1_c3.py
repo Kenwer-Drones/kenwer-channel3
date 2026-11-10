@@ -139,7 +139,7 @@ def test_out_of_order_and_duplicate_detection(db_session, tenant_and_identity):
         ),
     )
     t0 = datetime.now(timezone.utc)
-    # Insert later timestamp first, then earlier — reconstruction sorts chronologically
+    # Insert later timestamp first, then earlier - reconstruction sorts chronologically
     for key, seq, offset in [
         ("ooo-b", 2, 20),
         ("ooo-a", 1, 5),
@@ -223,7 +223,7 @@ def test_incomplete_events_yield_unknown(db_session, tenant_and_identity):
             captured_at=datetime.now(timezone.utc),
         ),
     )
-    # No observation events — missing, not invented
+    # No observation events - missing, not invented
     recon = EpisodeReconstructionService(db_session, tenant.id).reconstruct(ep.id)
     base = ExpectationRetrievalService(db_session, tenant.id).retrieve(ep.id)
     result = OutcomeEvaluationService().evaluate(recon, base)

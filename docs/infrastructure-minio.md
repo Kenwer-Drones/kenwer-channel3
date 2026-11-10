@@ -1,4 +1,4 @@
-# MinIO / Object Storage — Local Development Only
+# MinIO / Object Storage - Local Development Only
 
 ## Scope restriction (mandatory)
 
@@ -29,7 +29,7 @@ Root cause: MinIO community edition moved to **source-only** distribution; the c
 | Image reference | `cleanstart/minio@sha256:3377f7b92aabe2bdca25d26c3b37fe7d3fdbf5057e461bbc87af34ebd6252aaf` |
 | Publisher | CleanStart (Docker Hub Verified Publisher: `cleanstart/minio`) |
 | Why chosen | Digest-pinned, pullable on this workstation after official `minio/minio` became unavailable |
-| Pinning policy | **Digest only** — never floating `:latest` in Compose |
+| Pinning policy | **Digest only** - never floating `:latest` in Compose |
 | Runtime user | Image default UID `65532`; Compose runs `user: "0"` so a fresh named volume is writable |
 
 This is a **community/hardened redistributor image**, not an official MinIO, Inc. binary release. Treat it as a local convenience dependency with third-party supply-chain risk.
@@ -37,7 +37,7 @@ This is a **community/hardened redistributor image**, not an official MinIO, Inc
 ## Security limitations
 
 1. **Third-party build**: Kenwer does not control CleanStart’s build pipeline, base OS updates, or SBOM cadence. Re-verify digests before any shared or staging use.
-2. **Root volume write**: Compose uses `user: "0"` for local volume bootstrap — acceptable only for disposable local volumes.
+2. **Root volume write**: Compose uses `user: "0"` for local volume bootstrap - acceptable only for disposable local volumes.
 3. **Credentials**: `.env.example` uses well-known local keys (`kenwerminio`). Never reuse them outside localhost.
 4. **No TLS in Compose**: Local HTTP only. Not suitable for network-shared deployments.
 5. **Not authoritative memory**: Loss or compromise of MinIO must not corrupt Persistent / Episodic / Consolidated stores in Postgres.
@@ -63,7 +63,7 @@ See `docker-compose.yml` profile `storage`.
 |--------|--------|
 | Build MinIO from official source Dockerfile | Valid long-term production path |
 | Chainguard / commercial hardened images | May require registry auth |
-| Unpinned `:latest` tags | Rejected — not reproducible |
+| Unpinned `:latest` tags | Rejected - not reproducible |
 
 ## Evidence bucket
 

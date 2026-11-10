@@ -1,4 +1,4 @@
-"""Knowledge validation gate — fail-closed before any publication."""
+"""Knowledge validation gate - fail-closed before any publication."""
 
 from __future__ import annotations
 
@@ -131,7 +131,7 @@ class KnowledgeValidationService:
                     detail=f"Unknown safety_impact={safety_raw!r}",
                 )
             )
-            errors.append("Unknown safety impact — fail closed")
+            errors.append("Unknown safety impact - fail closed")
             safety = None
 
         if safety_raw in (None, "", "unknown"):
@@ -243,7 +243,7 @@ class KnowledgeValidationService:
         ) and label in ("insufficient", "weak", "moderate", "strong", None)
         if label == "insufficient" and op != BeliefProposalOperation.CHALLENGE:
             conf_ok = False
-            errors.append("evidence_support_label=insufficient — fail closed")
+            errors.append("evidence_support_label=insufficient - fail closed")
         checks.append(
             ValidationCheck(
                 name="confidence_labeling",

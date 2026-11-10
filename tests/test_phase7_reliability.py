@@ -162,7 +162,7 @@ def test_llm_malformed_response_soft_fails(db_session, tenant_and_identity):
     )
     finished = LearningPipeline(db_session, _MalformedProvider()).run(job.id)
     assert "C3" in finished.stage_artifacts
-    # Soft-fail or completed with abstain entries — must not publish
+    # Soft-fail or completed with abstain entries - must not publish
     assert finished.stage_artifacts.get("C6", {}).get("publication_performed") is not True
 
 
@@ -180,7 +180,7 @@ def test_duplicate_learning_job_idempotent(db_session, tenant_and_identity):
 
 
 def test_concurrent_approval_only_one_succeeds(engine, settings):
-    """Two concurrent APPROVE attempts — exactly one publication; other 409."""
+    """Two concurrent APPROVE attempts - exactly one publication; other 409."""
     from kenwer_c3.auth.bootstrap import ensure_dev_identity
     from kenwer_c3.db import models
 
@@ -287,7 +287,7 @@ def test_minio_unavailable_does_not_block_core_memory(db_session, tenant_and_ide
 def test_minio_bucket_setup_when_available():
     client = ObjectStorageClient()
     if not client.ping():
-        pytest.skip("MinIO not reachable — mark storage setup BLOCKED in report")
+        pytest.skip("MinIO not reachable - mark storage setup BLOCKED in report")
     info = client.ensure_bucket()
     assert info["exists"] is True
     key = f"phase7/reliability/{uuid.uuid4().hex}.txt"
@@ -297,7 +297,7 @@ def test_minio_bucket_setup_when_available():
 
 
 def test_postgres_interruption_recovery_smoke(engine):
-    """Reconnect after a closed connection — local recovery smoke test."""
+    """Reconnect after a closed connection - local recovery smoke test."""
     conn = engine.connect()
     assert conn.execute(text("SELECT 1")).scalar() == 1
     conn.close()
@@ -306,7 +306,7 @@ def test_postgres_interruption_recovery_smoke(engine):
 
 
 def test_celery_worker_interruption_marked():
-    """Documented as infrastructure acceptance — induced kill is BLOCKED in unit suite."""
+    """Documented as infrastructure acceptance - induced kill is BLOCKED in unit suite."""
     pytest.skip(
         "BLOCKED in unit suite: intentionally killing the Docker Celery worker mid-job "
         "requires operator orchestration. Covered operationally by "

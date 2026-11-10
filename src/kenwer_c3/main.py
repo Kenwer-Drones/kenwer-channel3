@@ -14,7 +14,7 @@ from kenwer_c3.settings import get_settings
 def create_app() -> FastAPI:
     settings = get_settings()
     app = FastAPI(
-        title="Kenwer Channel 3 — Cognitive Identity Layer",
+        title="Kenwer Channel 3 - Cognitive Identity Layer",
         description=(
             "Persistent, episodic, and consolidated cognitive memory with "
             "gated belief revision. Does not issue flight commands."

@@ -12,7 +12,7 @@ router = APIRouter(tags=["health"])
 
 @router.get("/health")
 def health() -> dict[str, str]:
-    """Process liveness — does not check dependencies."""
+    """Process liveness - does not check dependencies."""
     settings = get_settings()
     return {
         "status": "ok",
@@ -23,7 +23,7 @@ def health() -> dict[str, str]:
 
 @router.get("/ready")
 def ready() -> JSONResponse:
-    """Readiness — verifies database connectivity (and Redis when configured)."""
+    """Readiness - verifies database connectivity (and Redis when configured)."""
     checks: dict[str, str] = {}
     overall_ok = True
 
@@ -40,7 +40,7 @@ def ready() -> JSONResponse:
             checks["pgvector"] = "ok" if row else "missing"
             if not row:
                 overall_ok = False
-    except Exception as exc:  # noqa: BLE001 — surface dependency failure
+    except Exception as exc:  # noqa: BLE001 - surface dependency failure
         checks["postgres"] = f"error: {type(exc).__name__}"
         checks["pgvector"] = "unknown"
         overall_ok = False

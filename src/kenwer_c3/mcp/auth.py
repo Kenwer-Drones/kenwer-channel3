@@ -1,4 +1,4 @@
-"""MCP authentication — same API-key RBAC / tenant isolation as REST."""
+"""MCP authentication - same API-key RBAC / tenant isolation as REST."""
 
 from __future__ import annotations
 

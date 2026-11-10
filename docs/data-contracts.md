@@ -62,4 +62,4 @@ Pydantic models: `src/kenwer_c3/domain/`. ORM: `src/kenwer_c3/db/models.py`.
 3. Duplicate event keys are idempotent successes.
 4. Unapproved beliefs are never exposed as active consolidated knowledge.
 5. C4–C5 never mutate published belief content / current version / approval state.
-6. Similarity ranks candidates only — never alone decides agreement or contradiction.
+6. Similarity ranks candidates only - never alone decides agreement or contradiction.

@@ -38,7 +38,7 @@ Ensure `CELERY_TASK_ALWAYS_EAGER=false` for real async execution.
 ```bash
 python scripts/verify_docker_c1_c6.py
 python scripts/e2e_mission1_mission2.py
-python scripts/inventory_dev_beliefs.py   # report only — does not delete
+python scripts/inventory_dev_beliefs.py   # report only - does not delete
 ```
 
 ## Failure modes
