@@ -1,0 +1,101 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: kenwer
+      POSTGRES_PASSWORD: kenwer
+      POSTGRES_DB: kenwer_c3
+    ports:
+      # Host 5433 avoids conflict with other local Postgres instances
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kenwer -d kenwer_c3"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      # Host 6380 avoids conflict with other local Redis instances
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Object storage is optional for Phase 1. Enable with:
+  #   docker compose --profile storage up -d
+  # Image pull may require Docker Hub auth depending on local registry access.
+  minio:
+    profiles: ["storage"]
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: kenwerminio
+      MINIO_ROOT_PASSWORD: kenwerminio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    profiles: ["full"]
+    build: .
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn kenwer_c3.main:app --host 0.0.0.0 --port 8000 --reload"
+    env_file:
+      - .env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg://kenwer:kenwer@postgres:5432/kenwer_c3
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      S3_ENDPOINT_URL: http://minio:9000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./alembic:/app/alembic
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    profiles: ["full"]
+    build: .
+    command: celery -A kenwer_c3.workers.celery_app worker --loglevel=INFO
+    env_file:
+      - .env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg://kenwer:kenwer@postgres:5432/kenwer_c3
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      S3_ENDPOINT_URL: http://minio:9000
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_started
+
+volumes:
+  postgres_data:
+  minio_data:

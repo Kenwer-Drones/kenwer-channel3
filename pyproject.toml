@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kenwer-c3"
+version = "0.1.0"
+description = "Kenwer Channel 3 — Cognitive Identity Layer"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.32.0",
+  "pydantic>=2.9.0",
+  "pydantic-settings>=2.6.0",
+  "sqlalchemy>=2.0.36",
+  "psycopg[binary]>=3.2.0",
+  "alembic>=1.14.0",
+  "pgvector>=0.3.6",
+  "redis>=5.2.0",
+  "celery>=5.4.0",
+  "boto3>=1.35.0",
+  "httpx>=0.27.0",
+  "opentelemetry-api>=1.28.0",
+  "opentelemetry-sdk>=1.28.0",
+  "python-multipart>=0.0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+  "testcontainers[postgres]>=4.8.0",
+]
+
+[project.scripts]
+kenwer-c3 = "kenwer_c3.main:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kenwer_c3"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
